@@ -55,6 +55,10 @@ variable "cmk_grantees" {
   default     = []
 }
 
+
+###########################################################################
+# Tags:                                                                   #
+###########################################################################
 variable "cmk_tags" {
   type        = map
   description = "Specify any tags that should be added to the KMS CMK being provisioned."

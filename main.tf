@@ -38,16 +38,16 @@ resource "aws_kms_key" "this" {
 data "aws_iam_policy_document" "kms_owner_policy" {
 
   statement {
-    
-    sid           = "KMSKeyOwnerPolicy"
-    
+
+    sid = "KMSKeyOwnerPolicy"
+
     principals {
       type        = "AWS"
       identifiers = length(var.kms_owner_principal_list) > 0 ? var.kms_owner_principal_list : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
-    
+
     actions       = ["kms:*"]
-    
+
     resources     = ["*"]
   }
 }
@@ -56,15 +56,15 @@ data "aws_iam_policy_document" "kms_owner_policy" {
 data "aws_iam_policy_document" "kms_admin_policy" {
 
   statement {
-    
-    sid           = "KMSKeyAdministrationPolicy"
-    
+
+    sid = "KMSKeyAdministrationPolicy"
+
     principals {
       type        = "AWS"
       identifiers = length(var.kms_admin_principal_list) > 0 ? var.kms_admin_principal_list : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
-    
-    actions      = [
+
+    actions = [
       "kms:Create*",
       "kms:Describe*",
       "kms:Enable*",
@@ -95,15 +95,15 @@ data "aws_iam_policy_document" "temp_kms_owner_kms_admin_merge_policy" {
 data "aws_iam_policy_document" "kms_user_policy" {
 
   statement {
-    
-    sid       = "KMSKeyUserPolicy"
-    
+
+    sid = "KMSKeyUserPolicy"
+
     principals {
       type        = "AWS"
       identifiers = length(var.kms_user_principal_list) > 0 ? var.kms_user_principal_list : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
 
-    actions   = [
+    actions = [
       "kms:DescribeKey",
       "kms:GenerateDataKey*",
       "kms:Encrypt",
@@ -125,15 +125,15 @@ data "aws_iam_policy_document" "temp_kms_admin_kms_user_merge_policy" {
 data "aws_iam_policy_document" "kms_resource_policy" {  
 
   statement {  
-    
-    sid       = "KMSKeyGrantPolicy"
-    
+
+    sid = "KMSKeyGrantPolicy"
+
     principals {
       type        = "AWS"
       identifiers = length(var.kms_resource_principal_list) > 0 ? var.kms_resource_principal_list : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
 
-    actions      = [
+    actions = [
       "kms:ListGrants",
       "kms:CreateGrant",
       "kms:RevokeGrant",

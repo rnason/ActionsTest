@@ -27,8 +27,8 @@ cmk_grantees = ["arn:aws:iam::123456789101:root"]
 
 ###########################################################################
 # Tags:                                                                   #
-#-------------------------------------------------------------------------#
+###########################################################################
 cmk_tags = {
-    Provisioned_By    = "Terraform"
-    Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-KMS-Module.git"
+  Provisioned_By    = "Terraform"
+  Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-KMS-Module.git"
 }
