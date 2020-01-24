@@ -8,7 +8,7 @@
 
 | FMT Status    |              |
 |---------------|--------------|
-|![Terraform-Lint](https://github.com/rnason/ActionsTest/workflows/Terraform%20Lint/badge.svg)| |
+|![Terraform-Lint](https://github.com/rnason/ActionsTest/workflows/Terraform%20Checks/badge.svg)| |
 
 <br><br>
 
