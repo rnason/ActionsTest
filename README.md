@@ -12,6 +12,17 @@ This Terraform module was created to quickly and easily provision a secure AWS K
 
 <br><br>
 
+## Table of contents
+
+* [Pre-Requisites](#module-pre-requisites-and-dependencies)
+* [Module Usage](#module-usage)
+
+<br>
+
+![Lint](https://github.com/rnason/ActionsTest/workflows/Terraform%20Lint/badge.svg)
+
+<br><br>
+
 # Module Pre-Requisites and Dependencies
 
 This module does not currently have any pre-requisites or dependency requirements.
