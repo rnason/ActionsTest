@@ -1,4 +1,4 @@
-name: Terraform Lint
+name: Terraform-Lint
 on:
   # Trigger the workflow on push or pull request on the master branch only
   push:
