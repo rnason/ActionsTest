@@ -19,7 +19,7 @@ This Terraform module was created to quickly and easily provision a secure AWS K
 
 <br>
 
-![Lint](https://github.com/actions/ActionsTest/workflows/Terraform%20Lint/badge.svg)
+![Lint](https://github.com/rnason/ActionsTest/workflows/Terraform%20Lint/badge.svg)
 
 <br><br>
 
