@@ -20,7 +20,7 @@ jobs:
           if [[ "$DOCVERSION" != "$VERSION" ]]; then
             # Modify The Readme File
             sed -ie "s/MODULE%20VERSION-....../MODULE%20VERSION-$VERSION/g" README.md
-            sed -ie "s/$GITHUB_REPOSITORY?ref=....../$GITHUB_REPOSITORY?ref=$VERSION" README.md
+            sed -ie "s/?ref=....../?ref=$VERSION/g" README.md
           fi
         env:
           repository: ${{ github.repository }}

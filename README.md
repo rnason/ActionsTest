@@ -44,7 +44,7 @@ This module does not currently have any pre-requisites or dependency requirement
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_description       = "KMS key provisioned to encrypt prod s3 bucket"
@@ -80,7 +80,7 @@ Module variables that need to either be defined or re-defined with a non-default
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_alias_name = "prod/s3"
@@ -116,7 +116,7 @@ cmk_alias = "dev/ebs"
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_alias_name = var.cmk_alias
@@ -162,7 +162,7 @@ variable "kms_key_alias_name" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
@@ -198,7 +198,7 @@ variable "kms_key_description" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
@@ -346,7 +346,7 @@ variable "kms_owner_principal_list" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_description       = "KMS CMK used for encrypting all objects in the Prod S3 backup bucket."
@@ -503,7 +503,7 @@ variable "kms_admin_principal_list" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_description       = "KMS CMK used for encrypting all objects in the Prod S3 backup bucket."
@@ -681,7 +681,7 @@ variable "kms_user_principal_list" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_description       = "KMS CMK used for encrypting all objects in the Prod S3 backup bucket."
@@ -869,7 +869,7 @@ variable "kms_resource_principal_list" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_description         = "KMS CMK used for encrypting all objects in the Prod S3 backup bucket."
@@ -1089,7 +1089,7 @@ variable "kms_tags" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.4"
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
 
   // Required Variables
   kms_key_description         = "KMS CMK used for encrypting all objects in the Prod S3 backup bucket."
