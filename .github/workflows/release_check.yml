@@ -10,7 +10,9 @@ jobs:
       - uses: actions/checkout@master
       - name: Create README changes
         run : |
-          sed -i 's/\(LATEST-RELEASE:\)\(.*\)/\$(curl --silent "https://api.github.com/repos/$repository/releases/latest" | jq -r .tag_name)/' README.md
+          URL="https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest"
+          VERSION=$(curl --silent $URL | jq -r .tag_name)
+          sed -ie "s/#\ LATEST-RELEASE.*/#\ LATEST-RELEASE: $VERSION/g" README.md
         env:
           repository: ${{ github.repository }}
       - name: Commit Change
