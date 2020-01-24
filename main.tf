@@ -46,9 +46,9 @@ data "aws_iam_policy_document" "kms_owner_policy" {
       identifiers = length(var.kms_owner_principal_list) > 0 ? var.kms_owner_principal_list : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
 
-    actions       = ["kms:*"]
+    actions = ["kms:*"]
 
-    resources     = ["*"]
+    resources = ["*"]
   }
 }
 
@@ -122,9 +122,9 @@ data "aws_iam_policy_document" "temp_kms_admin_kms_user_merge_policy" {
 }
 
 // Construct the Resource policy to define services that are allowed to List, Create, and Revoke Grants to this Key
-data "aws_iam_policy_document" "kms_resource_policy" {  
+data "aws_iam_policy_document" "kms_resource_policy" {
 
-  statement {  
+  statement {
 
     sid = "KMSKeyGrantPolicy"
 
@@ -141,10 +141,10 @@ data "aws_iam_policy_document" "kms_resource_policy" {
     resources = ["*"]
 
     condition {
-      test       = "Bool"
-      variable   = "kms:GrantIsForAWSResource"
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
 
-      values     = [
+      values = [
         true
       ]
     }
