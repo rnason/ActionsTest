@@ -6,6 +6,12 @@
 
 <br>
 
+| FMT Status    |              |
+|---------------|--------------|
+|![Terraform-Lint](https://github.com/rnason/ActionsTest/workflows/Terraform%20Lint/badge.svg)| |
+
+<br><br>
+
 # Getting Started
 
 This Terraform module was created to quickly and easily provision a secure AWS Key Management Service (KMS) Customer Managed Key (CMK). CMK's are used for server-side encryption on AWS services such as S3 buckets, EBS volumes, Dynamo DB Tables, or any other service where data encryption is required. This module also includes optional variables that allow the consumer of the module to choose how KMS Key policies will be constructed and placed on be the CMK at the time of provisioning.
@@ -16,10 +22,11 @@ This Terraform module was created to quickly and easily provision a secure AWS K
 
 * [Pre-Requisites](#module-pre-requisites-and-dependencies)
 * [Module Usage](#module-usage)
-
-<br>
-
-![Terraform-Lint](https://github.com/rnason/ActionsTest/workflows/Terraform-Lint/badge.svg)
+* [Terraform Variables](#terraform-variables)
+  * [Setting Variables Inline](#setting-variables-inline)
+  * [Setting Variables in a Terraform Root Project](#setting-variables-in-a-terraform-root-project)
+* [Required Variables](#required-variables)
+  * [kms_key_alias_name](#kms_key_alias_name)
 
 <br><br>
 
