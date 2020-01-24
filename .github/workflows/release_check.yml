@@ -3,13 +3,12 @@ on:
   push:
     branches:
       - master
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
       - name: Create README changes
-        uses: actions/checkout@master
         run : |
           sed -i 's/\(LATEST-RELEASE:\)\(.*\)/\$(curl --silent "https://api.github.com/repos/$repository/releases/latest" | jq -r .tag_name)/' README.md
         repository: ${{ github.repository }}
