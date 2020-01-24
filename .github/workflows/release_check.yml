@@ -10,9 +10,18 @@ jobs:
       - uses: actions/checkout@master
       - name: Create README changes
         run : |
+          # Get the current version listed on the documentation
+          DOCVERSION=$(cat README.md | grep MODULE%20VERSION | cut -f3 -d "-")          
+          
+          # Get the latest version number
           URL="https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest"
           VERSION=$(curl --silent $URL | jq -r .tag_name)
-          sed -ie "s/#\ LATEST-RELEASE.*/#\ LATEST-RELEASE: $VERSION/g" README.md
+
+          if [[ "$DOCVERSION" != "$VERSION" ]]; then
+            # Modify The Readme File
+            sed -ie "s/MODULE%20VERSION-....../MODULE%20VERSION-$VERSION/g" README.md
+            sed -ie "s/$GITHUB_REPOSITORY?ref=....../$GITHUB_REPOSITORY?ref=$VERSION" README.md
+          fi
         env:
           repository: ${{ github.repository }}
       - name: Commit Change
