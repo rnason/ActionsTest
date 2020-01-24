@@ -11,7 +11,8 @@ jobs:
       - name: Create README changes
         run : |
           sed -i 's/\(LATEST-RELEASE:\)\(.*\)/\$(curl --silent "https://api.github.com/repos/$repository/releases/latest" | jq -r .tag_name)/' README.md
-        repository: ${{ github.repository }}
+        env:
+          repository: ${{ github.repository }}
       - name: Commit Change
         run: |
           git config --local user.name "GitHub Action"
