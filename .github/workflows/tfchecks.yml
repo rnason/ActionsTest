@@ -39,16 +39,17 @@ jobs:
           tf_actions_subcommand: 'validate'
           tf_actions_working_dir: '.'
           tf_actions_comment: true
+          args: '-var=region="us-east-1"'
         env:
-          TF_VAR_region: 'us-east-1'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Terraform Plan
         uses: hashicorp/terraform-github-actions@master
         with:
           tf_actions_version: latest
           tf_actions_subcommand: 'plan'
-          tf_actions_working_dir: '.'
+          tf_actions_working_dir: 'example/'
           tf_actions_comment: true
+          args: '-var=region="us-east-1"'
         env:
           TF_VAR_region: 'us-east-1'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
