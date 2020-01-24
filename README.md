@@ -10,10 +10,6 @@
 |------------------|--------------|
 | ![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-v1.0.0-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)  | ![Terraform-Lint](https://github.com/rnason/ActionsTest/workflows/Terraform%20Checks/badge.svg) |
 
-<br><br>
-
-# LATEST-RELEASE: v1
-
 <br>
 
 # Getting Started
