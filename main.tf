@@ -18,11 +18,11 @@ resource "aws_kms_key" "this" {
   tags = merge(
     var.kms_tags,
     {
-      Name            = lower(format("%s", var.kms_key_alias_name)),
-      Created_By      = data.aws_caller_identity.current.user_id
-      Creator_ARN     = data.aws_caller_identity.current.arn
-      Creation_Date   = timestamp()
-      Updated_On      = timestamp()
+      Name          = lower(format("%s", var.kms_key_alias_name)),
+      Created_By    = data.aws_caller_identity.current.user_id
+      Creator_ARN   = data.aws_caller_identity.current.arn
+      Creation_Date = timestamp()
+      Updated_On    = timestamp()
     }
   )
 

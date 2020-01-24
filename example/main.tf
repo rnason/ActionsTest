@@ -17,8 +17,8 @@ module "demo_cmk" {
   source = "git@github.com:CloudMage-TF/AWS-KMS-Module.git?ref=v1.0.4"
 
   // Required Examples
-  kms_key_description       = var.cmk_description
-  kms_key_alias_name        = var.cmk_alias
+  kms_key_description = var.cmk_description
+  kms_key_alias_name  = var.cmk_alias
   
   // Optional
   # kms_owner_principal_list    = var.cmk_owners
