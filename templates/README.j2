@@ -1,0 +1,224 @@
+<!-- VSCode Markdown Exclusions-->
+<!-- markdownlint-disable MD025 Single Title Headers-->
+{% if var.Config.Readme.Title is defined %}
+# {{ var.Config.Readme.Title }}
+{% else %}
+# Terraform Module Documentation
+{% endif %}
+
+{% if var.Config.Readme.HeroImage is defined %}
+![Hero]({{ var.Config.Readme.HeroImage }})<br>
+{% else %}
+<br>
+{% endif %}
+
+{% if var.Release.tag_name is defined %}
+![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-{{ var.Release.tag_name }}-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
+{% elif var.Config.Readme.Version %}
+![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-{{ var.Config.Readme.Version }}-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
+{% else %}
+![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-No%20Data-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
+{% endif %}
+
+<br>
+
+# Getting Started
+
+{% if var.Config.Readme.GettingStarted is defined %}
+{{ var.Config.Readme.GettingStarted }}
+{% elif var.Repo.description %}
+{{ var.Repo.description }}
+{% else %}
+No description has been defined for this project.
+{% endif %}
+<br><br>
+
+# Module Pre-Requisites and Dependencies
+
+{% if var.Config.Readme.PreRequisites is defined %}
+{{ var.Config.Readme.PreRequisites }}
+{% else %}
+This module does not currently have any pre-requisites or dependency requirements.
+{% endif %}
+<br><br>
+
+# Module Directory Structure
+
+```bash
+    {{ var.Tree }}
+```
+<br><br>
+
+# Module Usage <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+
+```terraform
+module "kms" {
+  source = "git@github.com:{{ var.Config.Repository.NameSpace}}/{{ var.Config.Repository.RepoName }}?ref={{ var.Release.tag_name }}"
+
+  // Required Variables
+  kms_key_description       = "KMS key provisioned to encrypt prod s3 bucket"
+  kms_key_alias_name        = "prod/s3"
+  
+  // Optional Variables with module defined default values assigned
+  # kms_owner_principal_list    = []
+  # kms_admin_principal_list    = []
+  # kms_user_principal_list     = []
+  # kms_resource_principal_list = []
+  
+  // Tags
+  # kms_tags                    = {
+  #   Provisioned_By    = "Terraform"
+  #   Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-KMS-Module.git"
+  # }
+}
+```
+
+<br><br>
+
+# Terraform Variables
+
+Module variables that need to either be defined or re-defined with a non-default value can easily be hardcoded inline directly within the module call block or from within the root project that is consuming the module. If using the second approach then the root project must have it's own custom variables defined within the projects `variables.tf` file with set default values or with the values provided from a separate environmental `terraform.tfvar` file. Examples of both approaches can be found below. Note that for the standards used within this documentation, all variables will mostly use the first approach for ease of readability.
+
+<br>
+
+> __NOTE:__ There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
+
+<br><br>
+
+## Setting Variables Inline <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+
+```terraform
+module "kms" {
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+
+  // Required Variables
+  kms_key_alias_name = "prod/s3"
+}
+```
+
+<br><br>
+
+## Setting Variables in a Terraform Root Project <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+
+<br>
+
+### Terraform Root Project/variables.tf
+
+```terraform
+variable "cmk_alias" {
+  type        = string
+  description = "Meaningful Description"
+}
+```
+
+<br>
+
+### Terraform Root Project/terraform.tfvars <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+
+```terraform
+cmk_alias = "dev/ebs"
+```
+
+<br>
+
+### Terraform Root Project/main.tf <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+
+```terraform
+module "kms" {
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+
+  // Required Variables
+  kms_key_alias_name = var.cmk_alias
+}
+```
+
+<br><br>
+
+# Required Variables
+
+The following required module variables do not contain default values and must be set by the consumer of the module to use the module successfully.
+
+<br><br>
+
+{% for item in var.TFRequiredVars %}
+## :red_circle: {{ item.variable }}
+
+<br>
+
+![Required](images/neon_required.png)
+
+<br>
+
+{{ item.description }}
+
+<br><br>
+
+### Declaration in module variables.tf
+
+```terraform
+variable "{{ item.variable }}" {
+  type        = {{ item.type }}
+  description = {{ item.description }}
+}
+```
+
+<br><br>
+
+### Module usage in project root main.tf <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+
+```terraform
+module "kms" {
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+
+  // Required Variables
+  kms_key_alias_name        = "prod/s3"
+}
+```
+
+<br><br><br>
+{% endfor %}
+<br><br>
+
+# Optional Variables
+
+The following optional module variables are not required because they already have default values assigned when the variables where defined within the modules `variables.tf` file. If the default values do not need to be changed by the root project consuming the module, then they do not even need to be included in the root project. If any of the variables do need to be changed, then they can be added to the root project in the same way that the required variables were defined and utilized. Optional variables also may alter how the module provisions resources in the cases of encryption or IAM policy generation. A variable could flag an encryption requirement when provisioning an S3 bucket or Dynamo table by providing a KMS CMK, for example. Another use case may be the passage of ARN values to allow users or roles access to services or resources, whereas by default permissions would be more restrictive or only assigned to the account root or a single IAM role. A detailed explanation of each of this modules optional variables can be found below:
+
+<br><br>
+
+{% for item in var.TFOptionalVars %}
+## :large_blue_circle: {{ item.variable }}
+
+<br>
+
+![Optional](images/neon_optional.png)
+
+<br>
+
+{{ item.description }}
+
+<br><br>
+
+### Declaration in module variables.tf
+
+```terraform
+variable "{{ item.variable }}" {
+  type        = {{ item.type }}
+  description = {{ item.description }}
+}
+```
+
+<br><br>
+
+### Module usage in project root main.tf <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+
+```terraform
+module "kms" {
+  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+
+  // Required Variables
+  kms_key_alias_name        = "prod/s3"
+}
+```
+
+<br><br><br>
+{% endfor %}
