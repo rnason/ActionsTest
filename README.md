@@ -241,6 +241,7 @@ List of users/roles/accounts that will own and have kms:* on the provisioned CMK
 variable "kms_owner_principal_list" {
   type        = list
   description = List of users/roles/accounts that will own and have kms:* on the provisioned CMK.
+  default     = []
 }
 ```
 
@@ -276,6 +277,7 @@ List of users/roles that will be key administrators of the provisioned KMS CMK
 variable "kms_admin_principal_list" {
   type        = list
   description = List of users/roles that will be key administrators of the provisioned KMS CMK
+  default     = []
 }
 ```
 
@@ -311,6 +313,7 @@ List of users/roles that will be granted usage of the provisioned KMS CMK.
 variable "kms_user_principal_list" {
   type        = list
   description = List of users/roles that will be granted usage of the provisioned KMS CMK.
+  default     = []
 }
 ```
 
@@ -346,6 +349,7 @@ List of users/roles that will be granted permissions to create/list/delete tempo
 variable "kms_resource_principal_list" {
   type        = list
   description = List of users/roles that will be granted permissions to create/list/delete temporary grants to the provisioned KMS CMK.
+  default     = []
 }
 ```
 
@@ -381,6 +385,7 @@ Specify any tags that should be added to the KMS CMK being provisioned.
 variable "kms_tags" {
   type        = map
   description = Specify any tags that should be added to the KMS CMK being provisioned.
+  default     = {'Provisioned_By': 'Terraform', 'Module_GitHub_URL': 'https://github.com/CloudMage-TF/AWS-KMS-Module.git'}
 }
 ```
 
