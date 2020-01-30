@@ -267,9 +267,10 @@ except Exception as e:
 try:
     logging.debug("Attempting to build directory tree variable...")
     # Set a variable for the Directory tree, and then call the Directory Tree Generator
-    DirTree = ""
+    DirTree = ".\n"
     for line in BuildDirTree(Path('.')):
-        DirTree += "{}\n".format(line)
+        if line != "":
+            DirTree += "{}\n".format(line)
     logging.debug("Directory Tree variable created successfully:")
     logging.debug("\n{}".format(DirTree))
 
@@ -316,6 +317,9 @@ try:
     # Define Variables that will hold the Required and Optional Variables.
     TFRequiredVars = []
     TFOptionalVars = []
+    # Define Variables to track the length of each variable so that spacing can be set correctly in the documentation
+    TFReqMaxLen = 0
+    TFOptMaxLen = 0
     logging.info("Building module variable list...")
     for tf in ProjectFiles:
         if 'variables.tf' in tf and 'example' not in tf and 'examples' not in tf:
@@ -328,19 +332,31 @@ try:
             # For each variable in the variables.tf file, put the variable into either the Required, or Optional based on the existence or absence of a default value.
             for k, v in Vars.get('variable').items():
                 if v.get('default') == None:
+                    # Check the length of the current item, and if its larger then the current max, then set the new max.
+                    if len(k) > TFReqMaxLen:
+                        TFReqMaxLen = len(k)
+                    # Log the required var and append to the required vars list.
                     logging.debug("Added {} to TFRequiredVars list.".format(k))
-                    TFRequiredVars.append({'variable': k, 'type': v.get('type'), 'description': v.get('description')})
+                    TFRequiredVars.append({'variable': k, 'type': v.get('type'), 'description': v.get('description'), 'value': Config.get('Readme').get('Usage').get('RequiredVariables').get(k, "Example Value") })
                 else:
+                    # Check the length of the current item, and if its larger then the current max, then set the new max.
+                    if len(k) > TFOptMaxLen:
+                        TFOptMaxLen = len(k)
+                    # Log the optional var and append to the optional vars list.
                     logging.debug("Added {} to TFOptionalVars list.".format(k))
                     TFOptionalVars.append({"variable": k, "type": v.get('type'), "description": v.get("description"), "default": v.get('default')})
-    logging.debug("Variable lists completed:")
-    logging.debug("Required Variables: {}".format(TFRequiredVars))
-    logging.debug("Optional Variables: {}".format(TFOptionalVars))
+    logging.info("Variable lists completed:")
+    logging.info("{} Required Variables Collected: {}".format(len(TFRequiredVars), TFRequiredVars))
+    logging.info("Longest Required Variable Length: {}".format(TFReqMaxLen))
+    logging.info("{} Optional Variables Collected: {}".format(len(TFOptionalVars), TFOptionalVars))
+    logging.info("Longest Optional Variable Length: {}".format(TFOptMaxLen))
 
     # Add the Variable Lists to the Template Dictionary
     logging.debug("Adding Lists to Template Dictionary")
     TemplateDict.update(TFRequiredVars=TFRequiredVars)
+    TemplateDict.update(TFRequiredVars_MaxLength=TFReqMaxLen)
     TemplateDict.update(TFOptionalVars=TFOptionalVars)
+    TemplateDict.update(TFOptionalVars_MaxLength=TFOptMaxLen)
 except Exception as e:
     cprint(" EXCEPTION ENCOUNTERED: ", 'grey', 'on_red')
     cprint("Error encountered attempting to construct terraform file list:\n\nException: {}\n".format(str(e)), 'red')

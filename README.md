@@ -2,7 +2,9 @@
 <!-- markdownlint-disable MD025 Single Title Headers-->
 # CloudMage Terraform ActionsTest Module
 
-![Hero](images/tf_kms.png)<br>
+![Hero](images/tf_kms.png)
+
+<br>
 
 ![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-v1.0.3-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
 
@@ -23,7 +25,8 @@ This module does not currently have any pre-requisites or dependency requirement
 # Module Directory Structure
 
 ```bash
-    ├── outputs.tf
+.
+├── outputs.tf
 ├── main.tf
 ├── requirements.txt
 ├── CHANGELOG.md
@@ -52,29 +55,29 @@ This module does not currently have any pre-requisites or dependency requirement
 └── ORIGIN_README.md
 
 ```
+
 <br><br>
 
-# Module Usage <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+# Module Usage
 
 ```terraform
 module "kms" {
-  source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
-  // Required Variables
-  kms_key_description       = "KMS key provisioned to encrypt prod s3 bucket"
-  kms_key_alias_name        = "prod/s3"
-  
-  // Optional Variables with module defined default values assigned
-  # kms_owner_principal_list    = []
-  # kms_admin_principal_list    = []
-  # kms_user_principal_list     = []
-  # kms_resource_principal_list = []
-  
-  // Tags
-  # kms_tags                    = {
-  #   Provisioned_By    = "Terraform"
-  #   Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-KMS-Module.git"
-  # }
+    // Required Variables
+    kms_key_alias_name  = "prod/s3"
+    kms_key_description = "KMS key provisioned to encrypt prod s3 bucket"
+
+    // Optional Variables with module defined default values assigned
+    # kms_owner_principal_list    = []
+    # kms_admin_principal_list    = []
+    # kms_user_principal_list     = []
+    # kms_resource_principal_list = []
+
+    # kms_tags = {
+    #   Provisioned_By = "Terraform"
+    #   Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-KMS-Module.git"
+    # }
 }
 ```
 
@@ -90,56 +93,63 @@ Module variables that need to either be defined or re-defined with a non-default
 
 <br><br>
 
-## Setting Variables Inline <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+## Setting Variables Inline
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
-  // Required Variables
-  kms_key_alias_name = "prod/s3"
+    // Required Variables
+    kms_key_alias_name  = "prod/s3"
+    kms_key_description = "KMS key provisioned to encrypt prod s3 bucket"
 }
 ```
 
 <br><br>
 
-## Setting Variables in a Terraform Root Project <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+## Setting Variables in a Terraform Root project
 
 <br>
 
 ### Terraform Root Project/variables.tf
 
 ```terraform
-variable "cmk_alias" {
-  type        = string
-  description = "Meaningful Description"
+variable "kms_key_alias_name" {
+    type        = "string"
+    description = "The alias that will be assigned to the provisioned KMS CMK. This value will be appended to alias/ within the module automatically."
+}
+variable "kms_key_description" {
+    type        = "string"
+    description = "The description that will be applied to the provisioned KMS Key."
 }
 ```
 
 <br>
 
-### Terraform Root Project/terraform.tfvars <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+### Terraform Root Project/terraform.tfvars
 
 ```terraform
-cmk_alias = "dev/ebs"
+kms_key_alias_name  = prod/s3
+kms_key_description = KMS key provisioned to encrypt prod s3 bucket
 ```
 
 <br>
 
-### Terraform Root Project/main.tf <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+### Terraform Root Project/main.tf
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
-  // Required Variables
-  kms_key_alias_name = var.cmk_alias
+    // Required Variables
+    kms_key_alias_name  = var.kms_key_alias_name
+    kms_key_description = var.kms_key_description
 }
 ```
 
 <br><br>
 
-# Required Variables
+# Required Variables   <<<<<<<<<<<<<<<<<<<<<---------HERE----------->>>>>>>>>>>>>>>>>>>>>>>
 
 The following required module variables do not contain default values and must be set by the consumer of the module to use the module successfully.
 
@@ -172,7 +182,7 @@ variable "kms_key_alias_name" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+  source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
@@ -207,7 +217,7 @@ variable "kms_key_description" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+  source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
@@ -251,7 +261,7 @@ variable "kms_owner_principal_list" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+  source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
@@ -287,7 +297,7 @@ variable "kms_admin_principal_list" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+  source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
@@ -323,7 +333,7 @@ variable "kms_user_principal_list" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+  source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
@@ -359,7 +369,7 @@ variable "kms_resource_principal_list" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+  source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
@@ -395,7 +405,7 @@ variable "kms_tags" {
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+  source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"

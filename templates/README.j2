@@ -1,27 +1,50 @@
+{# Set Example Module Name to use for module call examples #}
+{% if var.Config.Readme.Usage.ExampleModuleName is defined -%}
+    {% set ExmodName = var.Config.Readme.Usage.ExampleModuleName -%}
+{% else -%}
+    {% set ExmodName = var.Repo.name|default("example", true) -%}
+{% endif %}
+{# Set Example Module Namespace to use for module call examples #}
+{% if var.Config.Repository.NameSpace is defined -%}
+    {% set ExmodNameSpace = var.Config.Repository.NameSpace -%}
+{% else -%}
+    {% set ExmodNameSpace = var.Repo.owner.login|default("Example-GitHub-User", true) -%}
+{% endif %}
+{# Set Example Module Repo URL to use for module call examples #}
+{% if var.Config.Repository.RepoName is defined -%}
+    {% set ExmodRepoURL = "%s/%s"|format(ExmodNameSpace,var.Config.Repository.RepoName) -%}
+{% else -%}
+    {% set ExmodRepoURL = var.Repo.full_name|default("Example-GitHub-User/Example-Terraform-Module", true) -%}
+{% endif %}
+{# Set Example Module Version to use for module call examples #}
+{% if var.Release.tag_name is defined -%}
+    {% set ExmodVersion = var.Release.tag_name -%}
+{% else -%}
+    {% set ExmodVersion = var.Config.Readme.Version|default("v1.0.0", true) -%}
+{% endif %}
+{# START OF README TPL #}
 <!-- VSCode Markdown Exclusions-->
 <!-- markdownlint-disable MD025 Single Title Headers-->
+{# TITLE #}
 {% if var.Config.Readme.Title is defined %}
 # {{ var.Config.Readme.Title }}
 {% else %}
 # Terraform Module Documentation
 {% endif %}
 
+{# OPTIONAL HERO IMAGE #}
 {% if var.Config.Readme.HeroImage is defined %}
-![Hero]({{ var.Config.Readme.HeroImage }})<br>
-{% else %}
-<br>
-{% endif %}
-
-{% if var.Release.tag_name is defined %}
-![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-{{ var.Release.tag_name }}-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
-{% elif var.Config.Readme.Version %}
-![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-{{ var.Config.Readme.Version }}-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
-{% else %}
-![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-No%20Data-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
+![Hero]({{ var.Config.Readme.HeroImage }})
 {% endif %}
 
 <br>
 
+{# VERSION BADGE #}
+![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-{{ ExmodVersion }}-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
+
+<br>
+
+{# GETTING STARTED #}
 # Getting Started
 
 {% if var.Config.Readme.GettingStarted is defined %}
@@ -33,6 +56,7 @@ No description has been defined for this project.
 {% endif %}
 <br><br>
 
+{# PRE-REQS #}
 # Module Pre-Requisites and Dependencies
 
 {% if var.Config.Readme.PreRequisites is defined %}
@@ -42,34 +66,49 @@ This module does not currently have any pre-requisites or dependency requirement
 {% endif %}
 <br><br>
 
+{# DIRECTORY STRUCTURE TREE #}
 # Module Directory Structure
 
 ```bash
-    {{ var.Tree }}
+{{ var.Tree }}
 ```
+
 <br><br>
 
-# Module Usage <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+{# MODULE EXAMPLE #}
+# Module Usage
 
 ```terraform
-module "kms" {
-  source = "git@github.com:{{ var.Config.Repository.NameSpace}}/{{ var.Config.Repository.RepoName }}?ref={{ var.Release.tag_name }}"
+module "{{ ExmodName }}" {
+    source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
 
-  // Required Variables
-  kms_key_description       = "KMS key provisioned to encrypt prod s3 bucket"
-  kms_key_alias_name        = "prod/s3"
-  
-  // Optional Variables with module defined default values assigned
-  # kms_owner_principal_list    = []
-  # kms_admin_principal_list    = []
-  # kms_user_principal_list     = []
-  # kms_resource_principal_list = []
-  
-  // Tags
-  # kms_tags                    = {
-  #   Provisioned_By    = "Terraform"
-  #   Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-KMS-Module.git"
-  # }
+    // Required Variables
+    {% for item in var.TFRequiredVars %}
+    {% if item.type != 'map' %}
+    {{ item.variable }}{{ "="|indent(var.TFRequiredVars_MaxLength - item.variable|length + 1, True) }} "{{ item.value|default("Example Value", true) }}"
+    {% else %}
+
+    {{ item.variable }} = {
+        {% for key, value in item.default.items() %}
+        {{ key }} = "{{ value }}"
+        {% endfor %}
+    }
+    {% endif %}
+    {% endfor %}
+
+    // Optional Variables with module defined default values assigned
+    {% for item in var.TFOptionalVars %}
+    {% if item.type != 'map' %}
+    # {{ item.variable }}{{ "="|indent(var.TFOptionalVars_MaxLength - item.variable|length + 1, True) }} {{ item.default }}
+    {% else %}
+
+    # {{ item.variable }} = {
+        {% for key, value in item.default.items() %}
+    #   {{ key }} = "{{ value }}"
+        {% endfor %}
+    # }
+    {% endif %}
+    {% endfor %}
 }
 ```
 
@@ -85,56 +124,72 @@ Module variables that need to either be defined or re-defined with a non-default
 
 <br><br>
 
-## Setting Variables Inline <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+## Setting Variables Inline
 
 ```terraform
-module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+module "{{ ExmodName }}" {
+    source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
 
-  // Required Variables
-  kms_key_alias_name = "prod/s3"
+    // Required Variables
+    {% for item in var.TFRequiredVars %}
+    {% if item.type != 'map' %}
+    {{ item.variable }}{{ "="|indent(var.TFRequiredVars_MaxLength - item.variable|length + 1, True) }} "{{ item.value|default("Example Value", true) }}"
+    {% endif %}
+    {% endfor %}
 }
 ```
 
 <br><br>
 
-## Setting Variables in a Terraform Root Project <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+## Setting Variables in a Terraform Root project
 
 <br>
 
 ### Terraform Root Project/variables.tf
 
 ```terraform
-variable "cmk_alias" {
-  type        = string
-  description = "Meaningful Description"
+{% for item in var.TFRequiredVars %}
+{% if item.type != 'map' %}
+variable "{{ item.variable }}" {
+    type        = "{{ item.type }}"
+    description = "{{ item.description }}"
 }
+{% endif %}
+{% endfor %}
 ```
 
 <br>
 
-### Terraform Root Project/terraform.tfvars <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+### Terraform Root Project/terraform.tfvars
 
 ```terraform
-cmk_alias = "dev/ebs"
+{% for item in var.TFRequiredVars %}
+{% if item.type != 'map' %}
+{{ item.variable }}{{ "="|indent(var.TFRequiredVars_MaxLength - item.variable|length + 1, True) }} {{ item.value|default("Example Value", true) }}
+{% endif %}
+{% endfor %}
 ```
 
 <br>
 
-### Terraform Root Project/main.tf <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+### Terraform Root Project/main.tf
 
 ```terraform
-module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+module "{{ ExmodName }}" {
+    source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
 
-  // Required Variables
-  kms_key_alias_name = var.cmk_alias
+    // Required Variables
+    {% for item in var.TFRequiredVars %}
+    {% if item.type != 'map' %}
+    {{ item.variable }}{{ "="|indent(var.TFRequiredVars_MaxLength - item.variable|length + 1, True) }} var.{{ item.variable }}
+    {% endif %}
+    {% endfor %}
 }
 ```
 
 <br><br>
 
-# Required Variables
+# Required Variables   <<<<<<<<<<<<<<<<<<<<<---------HERE----------->>>>>>>>>>>>>>>>>>>>>>>
 
 The following required module variables do not contain default values and must be set by the consumer of the module to use the module successfully.
 
@@ -167,8 +222,8 @@ variable "{{ item.variable }}" {
 ### Module usage in project root main.tf <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
 
 ```terraform
-module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+module "{{ ExmodName }}" {
+  source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
@@ -213,8 +268,8 @@ variable "{{ item.variable }}" {
 ### Module usage in project root main.tf <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
 
 ```terraform
-module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-KMS-Module?ref=v1.0.0"
+module "{{ ExmodName }}" {
+  source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"
