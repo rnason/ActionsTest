@@ -8,11 +8,25 @@
 
 ![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-v1.0.3-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
 
-<br>
+<br><br>
 
 # Getting Started
 
 This Terraform module was created to quickly and easily provision a secure AWS Key Management Service (KMS) Customer Managed Key (CMK). CMK's are used for server-side encryption on AWS services such as S3 buckets, EBS volumes, Dynamo DB Tables, or any other service where data encryption is required. This module also includes optional variables that allow the consumer of the module to choose how KMS Key policies will be constructed and placed on be the CMK at the time of provisioning.
+
+<br>
+
+## Table of contents
+
+* [Pre-Requisites](#module-pre-requisites-and-dependencies)
+* [Module Directory Structure](#module-directory-structure)
+* [Module Usage](#module-usage)
+* [Terraform Variables](#terraform-variables)
+  * [Setting Variables Inline](#setting-variables-inline)
+  * [Setting Variables in a Terraform Root Project](#setting-variables-in-a-terraform-root-project)
+* [Required Module Variables](#required-variables)
+  * [kms_key_alias_name](#red-circle-kms-key-alias-name)
+* [Optional Module Variables](#optional-variables)
 
 <br><br>
 
@@ -46,6 +60,7 @@ This module does not currently have any pre-requisites or dependency requirement
 │   └── variables.tf
 ├── SampleGitHubCall.json
 ├── gendoc.log
+├── TODO_NOTES.yaml
 ├── README.md
 ├── README.yaml
 ├── variables.tf
@@ -65,8 +80,8 @@ module "kms" {
     source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
     // Required Variables
-    kms_key_alias_name  = "prod/s3"
-    kms_key_description = "KMS key provisioned to encrypt prod s3 bucket"
+    kms_key_alias_name  = "Example Value"
+    kms_key_description = "Example Value"
 
     // Optional Variables with module defined default values assigned
     # kms_owner_principal_list    = []
@@ -100,8 +115,8 @@ module "kms" {
     source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
 
     // Required Variables
-    kms_key_alias_name  = "prod/s3"
-    kms_key_description = "KMS key provisioned to encrypt prod s3 bucket"
+    kms_key_alias_name  = "Example Value"
+    kms_key_description = "Example Value"
 }
 ```
 
@@ -129,8 +144,8 @@ variable "kms_key_description" {
 ### Terraform Root Project/terraform.tfvars
 
 ```terraform
-kms_key_alias_name  = prod/s3
-kms_key_description = KMS key provisioned to encrypt prod s3 bucket
+kms_key_alias_name  = Example Value
+kms_key_description = Example Value
 ```
 
 <br>
@@ -149,7 +164,7 @@ module "kms" {
 
 <br><br>
 
-# Required Variables   <<<<<<<<<<<<<<<<<<<<<---------HERE----------->>>>>>>>>>>>>>>>>>>>>>>
+# Required Variables
 
 The following required module variables do not contain default values and must be set by the consumer of the module to use the module successfully.
 
@@ -190,7 +205,7 @@ module "kms" {
 ```
 
 <br><br><br>
-## :red_circle: kms_key_description
+## :red_circle:  kms_key_description
 
 <br>
 
@@ -227,7 +242,7 @@ module "kms" {
 <br><br><br>
 <br><br>
 
-# Optional Variables
+# Optional Variables <<<<<<<<<<<<<<<<<<<<<---------HERE----------->>>>>>>>>>>>>>>>>>>>>>>
 
 The following optional module variables are not required because they already have default values assigned when the variables where defined within the modules `variables.tf` file. If the default values do not need to be changed by the root project consuming the module, then they do not even need to be included in the root project. If any of the variables do need to be changed, then they can be added to the root project in the same way that the required variables were defined and utilized. Optional variables also may alter how the module provisions resources in the cases of encryption or IAM policy generation. A variable could flag an encryption requirement when provisioning an S3 bucket or Dynamo table by providing a KMS CMK, for example. Another use case may be the passage of ARN values to allow users or roles access to services or resources, whereas by default permissions would be more restrictive or only assigned to the account root or a single IAM role. A detailed explanation of each of this modules optional variables can be found below:
 

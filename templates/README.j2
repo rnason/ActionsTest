@@ -1,69 +1,81 @@
 {# Set Example Module Name to use for module call examples #}
-{% if var.Config.Readme.Usage.ExampleModuleName is defined -%}
-    {% set ExmodName = var.Config.Readme.Usage.ExampleModuleName -%}
+{% if var.Config.Readme.Usage.ResourceName is defined -%}
+    {% set ExModuleName = var.Config.Readme.Usage.ResourceName -%}
 {% else -%}
-    {% set ExmodName = var.Repo.name|default("example", true) -%}
+    {% set ExModuleName = var.Repo.name|default("example", true) -%}
 {% endif %}
 {# Set Example Module Namespace to use for module call examples #}
 {% if var.Config.Repository.NameSpace is defined -%}
-    {% set ExmodNameSpace = var.Config.Repository.NameSpace -%}
+    {% set ExModuleNameSpace = var.Config.Repository.NameSpace -%}
 {% else -%}
-    {% set ExmodNameSpace = var.Repo.owner.login|default("Example-GitHub-User", true) -%}
+    {% set ExModuleNameSpace = var.Repo.owner.login|default("Example-GitHub-User", true) -%}
 {% endif %}
 {# Set Example Module Repo URL to use for module call examples #}
 {% if var.Config.Repository.RepoName is defined -%}
-    {% set ExmodRepoURL = "%s/%s"|format(ExmodNameSpace,var.Config.Repository.RepoName) -%}
+    {% set ExModuleRepoURL = "%s/%s"|format(ExModuleNameSpace,var.Config.Repository.RepoName) -%}
 {% else -%}
-    {% set ExmodRepoURL = var.Repo.full_name|default("Example-GitHub-User/Example-Terraform-Module", true) -%}
+    {% set ExModuleRepoURL = var.Repo.full_name|default("Example-GitHub-User/Example-Terraform-Module", true) -%}
 {% endif %}
 {# Set Example Module Version to use for module call examples #}
 {% if var.Release.tag_name is defined -%}
-    {% set ExmodVersion = var.Release.tag_name -%}
+    {% set ExModuleVersion = var.Release.tag_name -%}
 {% else -%}
-    {% set ExmodVersion = var.Config.Readme.Version|default("v1.0.0", true) -%}
+    {% set ExModuleVersion = var.Config.Repository.Version|default("v1.0.0", true) -%}
 {% endif %}
 {# START OF README TPL #}
 <!-- VSCode Markdown Exclusions-->
 <!-- markdownlint-disable MD025 Single Title Headers-->
 {# TITLE #}
-{% if var.Config.Readme.Title is defined %}
-# {{ var.Config.Readme.Title }}
-{% else %}
-# Terraform Module Documentation
-{% endif %}
-
+# {{ var.Config.Readme.Title|default("Terraform Module Documentation", true) }}
 {# OPTIONAL HERO IMAGE #}
 {% if var.Config.Readme.HeroImage is defined %}
+
 ![Hero]({{ var.Config.Readme.HeroImage }})
 {% endif %}
 
 <br>
 
 {# VERSION BADGE #}
-![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-{{ ExmodVersion }}-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
+![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-{{ ExModuleVersion }}-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
 
-<br>
+<br><br>
+
+# Table of Contents
+
+* [Getting Started](#getting-started)
+* [Module Pre-Requisites and Dependencies](#module-pre-requisites-and-dependencies)
+* [Module Directory Structure](#module-directory-structure)
+* [Module Usage](#module-usage)
+* [Terraform Variable Usage](#terraform-variables-usage)
+  * [Inline Variable Declaration](#inline-variable-declaration)
+  * [TFVar Variable Declaration](#tfvar-variable-declaration)
+* [Required Module Variables](#required-variables)
+{% for var in var.TFRequiredVars %}
+  * :warning: {{var.Name}}
+{% endfor %}
+* [Optional Module Variables](#optional-variables)
+{% for var in var.TFOptionalVars %}
+  * :white_check_mark: {{var.Name}}
+{% endfor %}
+
+<br><br>
 
 {# GETTING STARTED #}
 # Getting Started
 
 {% if var.Config.Readme.GettingStarted is defined %}
 {{ var.Config.Readme.GettingStarted }}
-{% elif var.Repo.description %}
-{{ var.Repo.description }}
 {% else %}
-No description has been defined for this project.
+{{ var.Repo.Description|default("No description has been defined for this project.", true) }}
 {% endif %}
+
 <br><br>
 
 {# PRE-REQS #}
 # Module Pre-Requisites and Dependencies
 
-{% if var.Config.Readme.PreRequisites is defined %}
-{{ var.Config.Readme.PreRequisites }}
-{% else %}
-This module does not currently have any pre-requisites or dependency requirements.
-{% endif %}
+{{ var.Config.Readme.PreRequisites|default("This module does not currently have any pre-requisites or dependency requirements.", true) }}
+
 <br><br>
 
 {# DIRECTORY STRUCTURE TREE #}
@@ -79,17 +91,17 @@ This module does not currently have any pre-requisites or dependency requirement
 # Module Usage
 
 ```terraform
-module "{{ ExmodName }}" {
-    source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
+module "{{ ExModuleName }}" {
+    source = "git@github.com:{{ ExModuleRepoURL }}?ref={{ ExModuleVersion }}"
 
     // Required Variables
-    {% for item in var.TFRequiredVars %}
-    {% if item.type != 'map' %}
-    {{ item.variable }}{{ "="|indent(var.TFRequiredVars_MaxLength - item.variable|length + 1, True) }} "{{ item.value|default("Example Value", true) }}"
+    {% for var in var.TFRequiredVars %}
+    {% if var.Type != 'map' %}
+    {{ var.Name }}{{ "="|indent(var.TFRequiredVars_MaxLength - var.Name|length + 1, True) }} {{ "var.ExampleValue"|e if var.Type == 'String' else var.ExampleValue }}
     {% else %}
 
-    {{ item.variable }} = {
-        {% for key, value in item.default.items() %}
+    {{ var.Name }} = {
+        {% for key, value in var.DefaultValue.items() %}
         {{ key }} = "{{ value }}"
         {% endfor %}
     }
@@ -97,13 +109,13 @@ module "{{ ExmodName }}" {
     {% endfor %}
 
     // Optional Variables with module defined default values assigned
-    {% for item in var.TFOptionalVars %}
-    {% if item.type != 'map' %}
-    # {{ item.variable }}{{ "="|indent(var.TFOptionalVars_MaxLength - item.variable|length + 1, True) }} {{ item.default }}
+    {% for var in var.TFOptionalVars %}
+    {% if var.Type != 'map' %}
+    # {{ var.Name }}{{ "="|indent(var.TFOptionalVars_MaxLength - var.Name|length + 1, True) }} {{ "var.DefaultValue"|e if var.Type == 'String' else var.DefaultValue }}
     {% else %}
 
-    # {{ item.variable }} = {
-        {% for key, value in item.default.items() %}
+    # {{ var.Name }} = {
+        {% for key, value in var.DefaultValue.items() %}
     #   {{ key }} = "{{ value }}"
         {% endfor %}
     # }
@@ -114,26 +126,28 @@ module "{{ ExmodName }}" {
 
 <br><br>
 
-# Terraform Variables
+{# TERRAFORM VAR EXAMPLE #}
+# Terraform Variable Usage
 
 Module variables that need to either be defined or re-defined with a non-default value can easily be hardcoded inline directly within the module call block or from within the root project that is consuming the module. If using the second approach then the root project must have it's own custom variables defined within the projects `variables.tf` file with set default values or with the values provided from a separate environmental `terraform.tfvar` file. Examples of both approaches can be found below. Note that for the standards used within this documentation, all variables will mostly use the first approach for ease of readability.
 
 <br>
 
-> __NOTE:__ There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
+> :atom: &nbsp;[__Tip:__](Tip) <br> There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
 
 <br><br>
 
-## Setting Variables Inline
+{# INLINE VAR DECLARATION #}
+## Inline Variable Declaration
 
 ```terraform
-module "{{ ExmodName }}" {
-    source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
+module "{{ ExModuleName }}" {
+    source = "git@github.com:{{ ExModuleRepoURL }}?ref={{ ExModuleVersion }}"
 
     // Required Variables
-    {% for item in var.TFRequiredVars %}
-    {% if item.type != 'map' %}
-    {{ item.variable }}{{ "="|indent(var.TFRequiredVars_MaxLength - item.variable|length + 1, True) }} "{{ item.value|default("Example Value", true) }}"
+    {% for var in var.TFRequiredVars %}
+    {% if var.Type != 'map' %}
+    {{ var.Name }}{{ "="|indent(var.TFRequiredVars_MaxLength - var.Name|length + 1, True) }} {{ "var.ExampleValue"|e if var.Type == 'String' else var.ExampleValue }}
     {% endif %}
     {% endfor %}
 }
@@ -141,47 +155,48 @@ module "{{ ExmodName }}" {
 
 <br><br>
 
-## Setting Variables in a Terraform Root project
+{# FILE VAR DECLARATION #}
+## TFVar Variable Declaration
 
 <br>
 
-### Terraform Root Project/variables.tf
+### :file_folder: variables.tf
 
 ```terraform
-{% for item in var.TFRequiredVars %}
-{% if item.type != 'map' %}
-variable "{{ item.variable }}" {
-    type        = "{{ item.type }}"
-    description = "{{ item.description }}"
+{% for var in var.TFRequiredVars %}
+{% if var.Type != 'map' %}
+variable "{{ var.Name }}" {
+    type        = {{ var.Type }}
+    description = "{{ var.Description }}"
+{% endif %}
+{% endfor %}
 }
+```
+
+<br>
+
+### :file_folder: terraform.tfvars
+
+```terraform
+{% for var in var.TFRequiredVars %}
+{% if var.Type != 'map' %}
+{{ var.Name }}{{ "="|indent(var.TFRequiredVars_MaxLength - var.Name|length + 1, True) }} {{ "var.ExampleValue"|e if var.Type == 'String' else var.ExampleValue }}
 {% endif %}
 {% endfor %}
 ```
 
 <br>
 
-### Terraform Root Project/terraform.tfvars
+### :file_folder: main.tf
 
 ```terraform
-{% for item in var.TFRequiredVars %}
-{% if item.type != 'map' %}
-{{ item.variable }}{{ "="|indent(var.TFRequiredVars_MaxLength - item.variable|length + 1, True) }} {{ item.value|default("Example Value", true) }}
-{% endif %}
-{% endfor %}
-```
-
-<br>
-
-### Terraform Root Project/main.tf
-
-```terraform
-module "{{ ExmodName }}" {
-    source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
+module "{{ ExModuleName }}" {
+    source = "git@github.com:{{ ExModuleRepoURL }}?ref={{ ExModuleVersion }}"
 
     // Required Variables
-    {% for item in var.TFRequiredVars %}
-    {% if item.type != 'map' %}
-    {{ item.variable }}{{ "="|indent(var.TFRequiredVars_MaxLength - item.variable|length + 1, True) }} var.{{ item.variable }}
+    {% for var in var.TFRequiredVars %}
+    {% if var.Type != 'map' %}
+    {{ var.Name }}{{ "="|indent(var.TFRequiredVars_MaxLength - var.Name|length + 1, True) }} var.{{ var.Name }}
     {% endif %}
     {% endfor %}
 }
@@ -189,50 +204,119 @@ module "{{ ExmodName }}" {
 
 <br><br>
 
-# Required Variables   <<<<<<<<<<<<<<<<<<<<<---------HERE----------->>>>>>>>>>>>>>>>>>>>>>>
+{# FILE VAR DECLARATION #}
+# Required Variables
 
 The following required module variables do not contain default values and must be set by the consumer of the module to use the module successfully.
 
 <br><br>
 
-{% for item in var.TFRequiredVars %}
-## :red_circle: {{ item.variable }}
+{% for var in var.TFRequiredVars %}
+## :warning: {{ var.Name }}
+{# Insert Required Variable Image if Provided #}
+{% if var.Config.Readme.Variables.Required.Image is defined %}
 
 <br>
 
-![Required](images/neon_required.png)
+![Required]({{ var.Config.Readme.Variables.Required.Image }})
+{% endif %}
+
+<br>
+{# Insert Variable General Description or Terraform Description Value #}
+{% if var.GeneralDetails.Description is defined %}
+
+{{ var.GeneralDetails.Description }}
+{% else %}
+
+{{ var.Description }}
+{% endif %}
+{# Insert Variable General Notes if defined #}
+{% if var.GeneralDetails.Note is defined %}
 
 <br>
 
-{{ item.description }}
+:spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ var.GeneralDetails.Note }}
+
+{% endif %}
+{# Insert Variable General Image if defined #}
+{% if var.GeneralDetails.Image is defined %}
+
+<br>
+
+![{{ var.Name }}]({{ var.GeneralDetails.Image }})
+
+{% endif %}
+{# End Variable General Section #}
 
 <br><br>
 
-### Declaration in module variables.tf
+{# Declare Variable Example #}
+### :file_folder: Declaration of {{ var.Name }} within the nodules variables.tf file
 
 ```terraform
-variable "{{ item.variable }}" {
-  type        = {{ item.type }}
-  description = {{ item.description }}
+variable "{{ var.Name }}" {
+  type        = {{ var.Type }}
+  description = "{{ var.Description }}"
 }
 ```
+{# Insert Declare Variable Example Description if provided #}
+{% if var.VarDetails.Description is defined %}
+
+<br>
+
+{{ var.VarDetails.Description }}
+{% endif %}
+{# Insert Declare Variable Example Note if provided #}
+{% if var.VarDetails.Note is defined %}
+
+<br>
+
+:spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ var.VarDetails.Note }}
+{% endif %}
+{# Insert Declare Variable Example Image if provided #}
+{% if var.VarDetails.Image is defined %}
+
+<br>
+
+![Declaring {{ var.Name }}]({{ var.VarDetails.Image }})
+{% endif %}
 
 <br><br>
 
-### Module usage in project root main.tf <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
+### :file_folder: Setting the {{ var.Name }} module variable within a projects root main.tf file
 
 ```terraform
-module "{{ ExmodName }}" {
-  source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
+module "{{ ExModuleName }}" {
+    source = "git@github.com:{{ ExModuleRepoURL }}?ref={{ ExModuleVersion }}"
 
-  // Required Variables
-  kms_key_alias_name        = "prod/s3"
+    // Required Variables
+    {{ var.Name }}{{ "="|indent(var.TFRequiredVars_MaxLength - var.Name|length + 1, True) }} {{ "var.ExampleValue"|e if var.Type == 'String' else var.ExampleValue }}
 }
 ```
+{# Insert Usage Example Description if provided #}
+{% if var.UsageDetails.Description is defined %}
+
+<br>
+
+{{ var.UsageDetails.Description }}
+{% endif %}
+{# Insert Usage Example Note if provided #}
+{% if var.UsageDetails.Note is defined %}
+
+<br>
+
+:spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ var.UsageDetails.Note }}
+{% endif %}
+{# Insert Usage Example Image if provided #}
+{% if var.UsageDetails.Image is defined %}
+
+<br>
+
+![Declaring {{ var.Name }}]({{ var.UsageDetails.Image }})
+{% endif %}
 
 <br><br><br>
 {% endfor %}
-<br><br>
 
 # Optional Variables
 
@@ -241,7 +325,7 @@ The following optional module variables are not required because they already ha
 <br><br>
 
 {% for item in var.TFOptionalVars %}
-## :large_blue_circle: {{ item.variable }}
+## :large_blue_circle: {{ item.Name }}
 
 <br>
 
@@ -249,17 +333,17 @@ The following optional module variables are not required because they already ha
 
 <br>
 
-{{ item.description }}
+{{ item.Description }}
 
 <br><br>
 
 ### Declaration in module variables.tf
 
 ```terraform
-variable "{{ item.variable }}" {
-  type        = {{ item.type }}
-  description = {{ item.description }}
-  default     = {{ item.default }}
+variable "{{ item.Name }}" {
+  type        = {{ item.Type }}
+  description = {{ item.Description }}
+  default     = {{ item.DefaultValue }}
 }
 ```
 
@@ -268,8 +352,8 @@ variable "{{ item.variable }}" {
 ### Module usage in project root main.tf <<<<<<<<<<NOT COMPLETED>>>>>>>>>>>>>>>>
 
 ```terraform
-module "{{ ExmodName }}" {
-  source = "git@github.com:{{ ExmodRepoURL }}?ref={{ ExmodVersion }}"
+module "{{ ExModuleName }}" {
+  source = "git@github.com:{{ ExModuleRepoURL }}?ref={{ ExModuleVersion }}"
 
   // Required Variables
   kms_key_alias_name        = "prod/s3"

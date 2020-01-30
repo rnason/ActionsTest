@@ -329,22 +329,58 @@ try:
             logging.debug("variables.tf file open, parsing, sorting, and storing variables...")
             logging.debug(json.dumps(Vars, indent=4, sort_keys=True))
             
-            # For each variable in the variables.tf file, put the variable into either the Required, or Optional based on the existence or absence of a default value.
+            # For each variable in the variables.tf file:
+            # Check the config for additional variable data, then:
+            # Put the variable into either the Required, or Optional lists based on the existence or absence of a default value.
             for k, v in Vars.get('variable').items():
-                if v.get('default') == None:
+                # Create a base VarObject to pass to the template containing the data collected from parsing the variables.tf file
+                VarObject = {
+                    'Name': k,
+                    'Type': v.get('type', type(v)),
+                    'Description': v.get('description', "No Description Provided"),
+                    'ExampleValue': "Example Value"
+                }
+
+                # Check if Required Var
+                if v.get('default') == None:       
                     # Check the length of the current item, and if its larger then the current max, then set the new max.
                     if len(k) > TFReqMaxLen:
                         TFReqMaxLen = len(k)
+
+                    # Fetch any additional data for the variable defined in the config file.
+                    VarConfigData = Config.get('Readme').get('Variables').get('Required').get(k)
+
+                    # Check for additional data and add it to the variable object
+                    if VarConfigData is not None:
+                        for key, value in VarConfigData.items():
+                            VarObject.update({k: v})
+
                     # Log the required var and append to the required vars list.
                     logging.debug("Added {} to TFRequiredVars list.".format(k))
-                    TFRequiredVars.append({'variable': k, 'type': v.get('type'), 'description': v.get('description'), 'value': Config.get('Readme').get('Usage').get('RequiredVariables').get(k, "Example Value") })
+                    TFRequiredVars.append(VarObject)
+                
+                # If its not a Required Var, then it must be an Optional Var
                 else:
                     # Check the length of the current item, and if its larger then the current max, then set the new max.
                     if len(k) > TFOptMaxLen:
                         TFOptMaxLen = len(k)
+
+                    # Add the default value to the VarObject
+                    VarObject.update(DefaultValue=v.get('default'))
+                    
+                    # Fetch any additional data for the variable defined in the config file.
+                    VarConfigData = Config.get('Readme').get('Variables').get('Optional').get(k)
+
+                    # Check for additional data and add it to the variable object
+                    if VarConfigData is not None:
+                        for key, value in VarConfigData.items():
+                            VarObject.update({k: v})
+
                     # Log the optional var and append to the optional vars list.
                     logging.debug("Added {} to TFOptionalVars list.".format(k))
-                    TFOptionalVars.append({"variable": k, "type": v.get('type'), "description": v.get("description"), "default": v.get('default')})
+                    TFOptionalVars.append(VarObject)
+
+    # Log all the things
     logging.info("Variable lists completed:")
     logging.info("{} Required Variables Collected: {}".format(len(TFRequiredVars), TFRequiredVars))
     logging.info("Longest Required Variable Length: {}".format(TFReqMaxLen))
