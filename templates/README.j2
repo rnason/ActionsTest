@@ -66,8 +66,7 @@
 {% endfor %}
 * [Module Example Usage](#module-example-usage)
 * [Variables and TFVar Reference File Templates](#variables-and-tfvar-reference-file-templates)
-* [Module Outputs](#module-outputs)
-* [Module Output Usage](#module-output-usage)
+* [Module Outputs Reference File Templates](#module-outputs-reference-file-templates)
 * [Terraform Requirements](#terraform-requirements)
 * [Recommended Terraform Utilities](#recommended-terraform-utilities)
 * [Contacts and Contributions](#contacts-and-contributions)
@@ -138,7 +137,7 @@ module "{{ ExModuleName }}" {
         {% for key, value in tfvar.DefaultValue.items() %}
     #   {{ key }} = "{{ value }}"
         {% endfor %}
-    }
+    # }
     {% endif %}
     {% endfor %}
 }
@@ -151,7 +150,7 @@ module "{{ ExModuleName }}" {
 
 Module variables that need to either be defined or re-defined with a non-default value can easily be hardcoded inline directly within the module call block or from within the root project that is consuming the module. If using the second approach then the root project must have it's own custom variables defined within the projects `variables.tf` file with set default values or with the values provided from a separate environmental `terraform.tfvar` file. Examples of both approaches can be found below. Note that for the standards used within this documentation, all variables will mostly use the first approach for ease of readability.
 
-<br>
+<br><br>
 
 > :atom: &nbsp;[__Tip:__](Tip) <br> There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
 
@@ -230,13 +229,13 @@ module "{{ ExModuleName }}" {
 
 The following required module variables do not contain default values and must be set by the consumer of the module to use the module successfully.
 
-<br><br>
+<br>
 
 {% for tfvar in var.TFRequiredVars %}
 ## :warning: {{ tfvar.Name }}
 
 {# Insert Required Variable Image if Provided #}
-{%- if var.Config.Readme.Variables.Required.Image is defined %}
+{%- if var.Config.Readme.Variables.Required.Image %}
 
 <br>
 
@@ -246,24 +245,24 @@ The following required module variables do not contain default values and must b
 <br>
 
 {# Insert Variable General Description or Terraform Description Value #}
-{% if tfvar.GeneralDetails.Description is defined %}
+{% if tfvar.GeneralDetails.Description %}
 {{ tfvar.GeneralDetails.Description }}
 {% else %}
 {{ tfvar.Description }}
 {% endif %}
 
 {# Insert Variable General Notes if defined #}
-{%- if tfvar.GeneralDetails.Note is defined %}
+{%- if tfvar.GeneralDetails.Note %}
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.GeneralDetails.Note }}
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.GeneralDetails.Note }}
 {% endif %}
 
 {# Insert Variable General Image if defined #}
-{%- if tfvar.GeneralDetails.Image is defined %}
+{%- if tfvar.GeneralDetails.Image %}
 
-<br>
+<br><br>
 
 ![{{ tfvar.Name }}]({{ tfvar.GeneralDetails.Image }})
 {% endif %}
@@ -282,7 +281,7 @@ variable "{{ tfvar.Name }}" {
 ```
 
 {# Insert Declare Variable Example Description if provided #}
-{%- if tfvar.VarDetails.Description is defined %}
+{%- if tfvar.VarDetails.Description %}
 
 <br>
 
@@ -290,15 +289,15 @@ variable "{{ tfvar.Name }}" {
 {% endif %}
 
 {# Insert Declare Variable Example Note if provided #}
-{%- if tfvar.VarDetails.Note is defined %}
+{%- if tfvar.VarDetails.Note %}
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.VarDetails.Note }}
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.VarDetails.Note }}
 {% endif %}
 
 {# Insert Declare Variable Example Image if provided #}
-{%- if tfvar.VarDetails.Image is defined %}
+{%- if tfvar.VarDetails.Image %}
 
 <br>
 
@@ -329,7 +328,7 @@ module "{{ ExModuleName }}" {
 ```
 
 {# Insert Usage Example Description if provided #}
-{%- if tfvar.UsageDetails.Description is defined %}
+{%- if tfvar.UsageDetails.Description %}
 
 <br>
 
@@ -337,15 +336,15 @@ module "{{ ExModuleName }}" {
 {% endif %}
 
 {# Insert Usage Example Note if provided #}
-{%- if tfvar.UsageDetails.Note is defined %}
+{%- if tfvar.UsageDetails.Note %}
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.UsageDetails.Note }}
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.UsageDetails.Note }}
 {% endif %}
 
 {# Insert Usage Example Image if provided #}
-{%- if tfvar.UsageDetails.Image is defined %}
+{%- if tfvar.UsageDetails.Image %}
 
 <br>
 
@@ -367,7 +366,7 @@ The following optional module variables are not required because they already ha
 ## :white_check_mark: {{ tfvar.Name }}
 
 {# Insert Optional Variable Image if Provided #}
-{%- if var.Config.Readme.Variables.Optional.Image is defined %}
+{%- if var.Config.Readme.Variables.Optional.Image %}
 
 <br>
 
@@ -377,22 +376,22 @@ The following optional module variables are not required because they already ha
 <br>
 
 {# Insert Variable General Description or Terraform Description Value #}
-{% if tfvar.GeneralDetails.Description is defined %}
+{% if tfvar.GeneralDetails.Description %}
 {{ tfvar.GeneralDetails.Description }}
 {% else %}
 {{ tfvar.Description }}
 {% endif %}
 
 {# Insert Variable General Notes if defined #}
-{%- if tfvar.GeneralDetails.Note is defined %}
+{%- if tfvar.GeneralDetails.Note %}
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.GeneralDetails.Note }}
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.GeneralDetails.Note }}
 {% endif %}
 
 {# Insert Variable General Image if defined #}
-{%- if tfvar.GeneralDetails.Image is defined %}
+{%- if tfvar.GeneralDetails.Image %}
 
 <br>
 
@@ -426,7 +425,7 @@ variable "{{ tfvar.Name }}" {
 {% endif %}
 
 {# Insert Declare Variable Example Description if provided #}
-{%- if tfvar.VarDetails.Description is defined %}
+{%- if tfvar.VarDetails.Description %}
 
 <br>
 
@@ -434,15 +433,15 @@ variable "{{ tfvar.Name }}" {
 {% endif %}
 
 {# Insert Declare Variable Example Note if provided #}
-{%- if tfvar.VarDetails.Note is defined %}
+{%- if tfvar.VarDetails.Note %}
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.VarDetails.Note }}
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.VarDetails.Note }}
 {% endif %}
 
 {# Insert Declare Variable Example Image if provided #}
-{%- if tfvar.VarDetails.Image is defined %}
+{%- if tfvar.VarDetails.Image %}
 
 <br>
 
@@ -490,7 +489,7 @@ module "{{ ExModuleName }}" {
 ```
 
 {# Insert Usage Example Description if provided #}
-{%- if tfvar.UsageDetails.Description is defined %}
+{%- if tfvar.UsageDetails.Description %}
 
 <br>
 
@@ -498,15 +497,15 @@ module "{{ ExModuleName }}" {
 {% endif %}
 
 {# Insert Usage Example Note if provided #}
-{%- if tfvar.UsageDetails.Note is defined %}
+{%- if tfvar.UsageDetails.Note %}
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.UsageDetails.Note }}
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.UsageDetails.Note }}
 {% endif %}
 
 {# Insert Usage Example Image if provided #}
-{%- if tfvar.UsageDetails.Image is defined %}
+{%- if tfvar.UsageDetails.Image %}
 
 <br>
 
@@ -634,16 +633,18 @@ variable "{{ tfvar.Name }}" {
 
 <br><br>
 
-# Module Outputs
+# Module Outputs Reference File Templates
 
-The template will finally create the following outputs that can be pulled and used in subsequent terraform runs via data sources. The outputs will be written to the Terraform state file.
+The template will finally create the following outputs that can be pulled and used in subsequent terraform runs via data sources. The outputs will be written to the Terraform state file. When using and calling the module within a root project, the output values of the module are available to the project root by simply referencing the module outputs from the root project `outputs.tf` file.
 
-<br>
+<br><br>
+
+## :file_folder: Module outputs.tf Reference File
 
 ```terraform
-####################################
-# {{ ExModuleRepoURL }} Outputs:   #
-####################################
+##############################################
+# {{ ExModuleRepoURL }} Outputs:             #
+##############################################
 {% for output in var.TFOutputs %}
 output "{{ output.Name }}" {
     {{ output.Output }}
@@ -653,22 +654,17 @@ output "{{ output.Name }}" {
 
 <br><br>
 
-# Module Output Usage
-
-When using and calling the module within a root project, the output values of the module are available to the project root by simply referencing the module outputs from the root project `outputs.tf` file.
-
-<br>
+## :file_folder: Module Output Usage Reference File
 
 ```terraform
-####################################
-# {{ ExModuleRepoURL }} Outputs:   #
-####################################
+##############################################
+# {{ ExModuleRepoURL }} Outputs:             #
+##############################################
 {% for output in var.TFOutputs %}
 output "{{ output.Name }}" {
     value = module.{{ ExModuleName }}.{{ output.Output }}
 }
-
-{%- endfor %}
+{% endfor %}
 ```
 
 <br>

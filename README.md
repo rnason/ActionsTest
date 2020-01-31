@@ -7,7 +7,7 @@
 
 <br>
 
-![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-v1.0.3-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
+![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-v1.1.0-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
 
 <br><br>
 
@@ -31,8 +31,7 @@
   * :white_check_mark: kms_tags
 * [Module Example Usage](#module-example-usage)
 * [Variables and TFVar Reference File Templates](#variables-and-tfvar-reference-file-templates)
-* [Module Outputs](#module-outputs)
-* [Module Output Usage](#module-output-usage)
+* [Module Outputs Reference File Templates](#module-outputs-reference-file-templates)
 * [Terraform Requirements](#terraform-requirements)
 * [Recommended Terraform Utilities](#recommended-terraform-utilities)
 * [Contacts and Contributions](#contacts-and-contributions)
@@ -92,7 +91,7 @@ This module does not currently have any pre-requisites or dependency requirement
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_alias_name  = prod/s3
@@ -108,7 +107,7 @@ module "kms" {
     # kms_tags = {
     #   Provisioned_By = "Terraform"
     #   Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-KMS-Module.git"
-    }
+    # }
 }
 ```
 
@@ -118,7 +117,7 @@ module "kms" {
 
 Module variables that need to either be defined or re-defined with a non-default value can easily be hardcoded inline directly within the module call block or from within the root project that is consuming the module. If using the second approach then the root project must have it's own custom variables defined within the projects `variables.tf` file with set default values or with the values provided from a separate environmental `terraform.tfvar` file. Examples of both approaches can be found below. Note that for the standards used within this documentation, all variables will mostly use the first approach for ease of readability.
 
-<br>
+<br><br>
 
 > :atom: &nbsp;[__Tip:__](Tip) <br> There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
 
@@ -128,7 +127,7 @@ Module variables that need to either be defined or re-defined with a non-default
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_alias_name  = prod/s3
@@ -170,7 +169,7 @@ kms_key_description = KMS key provisioned to encrypt prod s3 bucket
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_alias_name  = var.kms_key_alias_name
@@ -184,7 +183,7 @@ module "kms" {
 
 The following required module variables do not contain default values and must be set by the consumer of the module to use the module successfully.
 
-<br><br>
+<br>
 
 ## :warning: kms_key_alias_name
 
@@ -200,12 +199,8 @@ This variable should be passed containing the desired key alias that will be ass
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> The required `alias/` prefix is already defined in the module and not required as part of the variable string.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> The required `alias/` prefix is already defined in the module and not required as part of the variable string.
 
-
-<br>
-
-![kms_key_alias_name](None)
 
 <br><br>
 
@@ -219,19 +214,7 @@ variable "kms_key_alias_name" {
 ```
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![Declaring kms_key_alias_name](None)
 
 <br><br>
 
@@ -239,7 +222,7 @@ None
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_alias_name  = prod/s3
@@ -247,19 +230,7 @@ module "kms" {
 ```
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![kms_key_alias_name Usage Example](None)
 
 <br><br><br>
 
@@ -275,14 +246,6 @@ None
 This variable should be passed containing a short description of what the provisioned KMS CMK will be used for as its value.
 
 
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![kms_key_description](None)
 
 <br><br>
 
@@ -296,19 +259,7 @@ variable "kms_key_description" {
 ```
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![Declaring kms_key_description](None)
 
 <br><br>
 
@@ -316,7 +267,7 @@ None
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_description = KMS key provisioned to encrypt prod s3 bucket
@@ -324,19 +275,7 @@ module "kms" {
 ```
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![kms_key_description Usage Example](None)
 
 <br><br><br>
 
@@ -360,12 +299,8 @@ This variable is used to define a list of users/roles that will be added to the 
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> The key owner policy statement determines what users/roles own the provisioned KMS key. Owners have `kms:*` permissions on the CMK. They can perform any action on the key including performing any modifications to the key and the key policy.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> The key owner policy statement determines what users/roles own the provisioned KMS key. Owners have `kms:*` permissions on the CMK. They can perform any action on the key including performing any modifications to the key and the key policy.
 
-
-<br>
-
-![kms_owner_principal_list](None)
 
 <br><br>
 
@@ -378,19 +313,11 @@ variable "kms_owner_principal_list" {
     default     = []
 }
 
-<br>
-
-None
-
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
 
-
-<br>
-
-![Declaring kms_owner_principal_list](None)
 
 <br><br>
 
@@ -398,7 +325,7 @@ None
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_alias_name  = prod/s3
@@ -411,19 +338,7 @@ module "kms" {
 ```
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![kms_owner_principal_list Usage Example](None)
 
 <br><br><br>## :white_check_mark: kms_admin_principal_list
 
@@ -439,12 +354,8 @@ This variable is used to define a list of users/roles that will be added to the 
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> The key administrator policy statement determines what users/roles have administrative rights on the provisioned KMS key. Key administrators can modify the key and the key policy, but they are not granted usage of the key, or the ability to manage grants for the key. If a key administrator requires usage permissions, then they would also need to be added to the key usage policy statement.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> The key administrator policy statement determines what users/roles have administrative rights on the provisioned KMS key. Key administrators can modify the key and the key policy, but they are not granted usage of the key, or the ability to manage grants for the key. If a key administrator requires usage permissions, then they would also need to be added to the key usage policy statement.
 
-
-<br>
-
-![kms_admin_principal_list](None)
 
 <br><br>
 
@@ -457,19 +368,11 @@ variable "kms_admin_principal_list" {
     default     = []
 }
 
-<br>
-
-None
-
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
 
-
-<br>
-
-![Declaring kms_admin_principal_list](None)
 
 <br><br>
 
@@ -477,7 +380,7 @@ None
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_alias_name  = prod/s3
@@ -490,19 +393,7 @@ module "kms" {
 ```
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![kms_admin_principal_list Usage Example](None)
 
 <br><br><br>## :white_check_mark: kms_user_principal_list
 
@@ -518,12 +409,8 @@ This variable is used to define a list of users/roles that will be added to the 
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> The key usage policy statement determines what users/roles have rights to encrypt, decrypt, re-encrypt, and generate data key operations with the provisioned CMK. Any users/roles that are included in this policy statement have no other rights on the key unless they are also added to one of the other key policy statement blocks also.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> The key usage policy statement determines what users/roles have rights to encrypt, decrypt, re-encrypt, and generate data key operations with the provisioned CMK. Any users/roles that are included in this policy statement have no other rights on the key unless they are also added to one of the other key policy statement blocks also.
 
-
-<br>
-
-![kms_user_principal_list](None)
 
 <br><br>
 
@@ -536,19 +423,11 @@ variable "kms_user_principal_list" {
     default     = []
 }
 
-<br>
-
-None
-
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
 
-
-<br>
-
-![Declaring kms_user_principal_list](None)
 
 <br><br>
 
@@ -556,7 +435,7 @@ None
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_alias_name  = prod/s3
@@ -569,19 +448,7 @@ module "kms" {
 ```
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![kms_user_principal_list Usage Example](None)
 
 <br><br><br>## :white_check_mark: kms_resource_principal_list
 
@@ -597,12 +464,8 @@ This variable is used to define a list of users/roles that will be added to the 
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> The key resource grant policy statement determines what users/roles have rights to list, create, and revoke grants on the provisioned CMK. Key grants are a way of providing usage of the CMK temporarily. A user/role that has key grant or resource rights is allowed to grant applications, services, or resources a limited time pass to use the CMK and then revoke that pass when the application, service, or resource has completed the operation that required access to the key. No other rights on the key are given unless the user/role is also added to one of the other key policy statement blocks also.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> The key resource grant policy statement determines what users/roles have rights to list, create, and revoke grants on the provisioned CMK. Key grants are a way of providing usage of the CMK temporarily. A user/role that has key grant or resource rights is allowed to grant applications, services, or resources a limited time pass to use the CMK and then revoke that pass when the application, service, or resource has completed the operation that required access to the key. No other rights on the key are given unless the user/role is also added to one of the other key policy statement blocks also.
 
-
-<br>
-
-![kms_resource_principal_list](None)
 
 <br><br>
 
@@ -615,19 +478,11 @@ variable "kms_resource_principal_list" {
     default     = []
 }
 
-<br>
-
-None
-
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
 
-
-<br>
-
-![Declaring kms_resource_principal_list](None)
 
 <br><br>
 
@@ -635,7 +490,7 @@ None
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_alias_name  = prod/s3
@@ -648,19 +503,7 @@ module "kms" {
 ```
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![kms_resource_principal_list Usage Example](None)
 
 <br><br><br>## :white_check_mark: kms_tags
 
@@ -677,12 +520,8 @@ This variable should contain a map of tags that will be assigned to the KMS CMK 
 
 <br>
 
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> The key administrator policy statement determines what users/roles have administrative rights on the provisioned KMS key. Key administrators can modify the key and the key policy, but they are not granted usage of the key, or the ability to manage grants for the key. If a key administrator requires usage permissions, then they would also need to be added to the key usage policy statement.
+> :spiral_notepad: &nbsp;[__Note:__](Note) <br> The key administrator policy statement determines what users/roles have administrative rights on the provisioned KMS key. Key administrators can modify the key and the key policy, but they are not granted usage of the key, or the ability to manage grants for the key. If a key administrator requires usage permissions, then they would also need to be added to the key usage policy statement.
 
-
-<br>
-
-![kms_tags](None)
 
 <br><br>
 
@@ -699,19 +538,7 @@ variable "kms_tags" {
 }
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![Declaring kms_tags](None)
 
 <br><br>
 
@@ -719,7 +546,7 @@ None
 
 ```terraform
 module "kms" {
-    source = "git@github.com:tapestryinc/TF-AWS-KMS-Module?ref=v1.0.3"
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
 
     // Required Variables
     kms_key_alias_name  = prod/s3
@@ -736,19 +563,7 @@ module "kms" {
 ```
 
 
-<br>
 
-None
-
-
-<br>
-
-:spiral_notepad: &nbsp;[__Note:__](Note) <br> None
-
-
-<br>
-
-![kms_tags Usage Example](None)
 
 <br><br><br>
 
@@ -768,7 +583,7 @@ The following code blocks can be used or appended to an existing `variables.tf` 
 
 ```terraform
 ###########################################################################
-# Required tapestryinc/TF-AWS-KMS-Module Module Vars:                             #
+# Required rnason/ActionsTest Module Vars:                             #
 #-------------------------------------------------------------------------#
 # The following variables require consumer defined values to be provided. #
 ###########################################################################
@@ -784,7 +599,7 @@ variable "kms_key_description" {
 
 
 ###########################################################################
-# Optional tapestryinc/TF-AWS-KMS-Module Module Vars:                             #
+# Optional rnason/ActionsTest Module Vars:                             #
 #-------------------------------------------------------------------------#
 # The following variables have default values already set by the module.  #
 # They will not need to be included in a project root module variables.tf #
@@ -827,7 +642,7 @@ variable "kms_tags" {
 
 ```terraform
 ###########################################################################
-# Required tapestryinc/TF-AWS-KMS-Module Module Vars:                             #
+# Required rnason/ActionsTest Module Vars:                             #
 #-------------------------------------------------------------------------#
 # The following variables require consumer defined values to be provided. #
 ###########################################################################
@@ -836,7 +651,7 @@ kms_key_description = "Value Required"
 
 
 ###########################################################################
-# Optional tapestryinc/TF-AWS-KMS-Module Module Vars:                             #
+# Optional rnason/ActionsTest Module Vars:                             #
 #-------------------------------------------------------------------------#
 # The following variables have default values already set by the module.  #
 # They will not need to be included in a project root module variables.tf #
@@ -855,16 +670,18 @@ kms_key_description = "Value Required"
 
 <br><br>
 
-# Module Outputs
+# Module Outputs Reference File Templates
 
-The template will finally create the following outputs that can be pulled and used in subsequent terraform runs via data sources. The outputs will be written to the Terraform state file.
+The template will finally create the following outputs that can be pulled and used in subsequent terraform runs via data sources. The outputs will be written to the Terraform state file. When using and calling the module within a root project, the output values of the module are available to the project root by simply referencing the module outputs from the root project `outputs.tf` file.
 
-<br>
+<br><br>
+
+## :file_folder: Module outputs.tf Reference File
 
 ```terraform
-####################################
-# tapestryinc/TF-AWS-KMS-Module Outputs:   #
-####################################
+##############################################
+# rnason/ActionsTest Outputs:             #
+##############################################
 output "kms_key_id" {
     aws_kms_key.this.id
 }
@@ -878,23 +695,22 @@ output "kms_key_alias" {
 
 <br><br>
 
-# Module Output Usage
-
-When using and calling the module within a root project, the output values of the module are available to the project root by simply referencing the module outputs from the root project `outputs.tf` file.
-
-<br>
+## :file_folder: Module Output Usage Reference File
 
 ```terraform
-####################################
-# tapestryinc/TF-AWS-KMS-Module Outputs:   #
-####################################
+##############################################
+# rnason/ActionsTest Outputs:             #
+##############################################
 output "kms_key_id" {
     value = module.kms.aws_kms_key.this.id
-}output "kms_key_arn" {
+}
+output "kms_key_arn" {
     value = module.kms.aws_kms_key.this.arn
-}output "kms_key_alias" {
+}
+output "kms_key_alias" {
     value = module.kms.aws_kms_alias.this.arn
-}```
+}
+```
 
 <br>
 
@@ -921,7 +737,7 @@ output "kms_key_id" {
 
 This project is owned by [CloudMage](rnason@cloudmage.io)
 
-* [tapestryinc](https://github.com/tapestryinc)
+* [rnason](https://github.com/rnason)
 
 <br>
 
