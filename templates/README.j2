@@ -58,11 +58,11 @@
   * [TFVar Variable Declaration](#tfvar-variable-declaration)
 * [Required Module Variables](#required-variables)
 {% for tfvar in var.TFRequiredVars %}
-  * :warning: {{tfvar.Name}}
+  * :stop_sign: `{{tfvar.Name}}`
 {% endfor %}
 * [Optional Module Variables](#optional-module-variables)
 {% for tfvar in var.TFOptionalVars %}
-  * :white_check_mark: {{tfvar.Name}}
+  * :recycle: `{{tfvar.Name}}`
 {% endfor %}
 * [Module Example Usage](#module-example-usage)
 * [Variables and TFVar Reference File Templates](#variables-and-tfvar-reference-file-templates)
@@ -254,7 +254,7 @@ The following required module variables do not contain default values and must b
 {# Insert Variable General Notes if defined #}
 {%- if tfvar.GeneralDetails.Note %}
 
-<br>
+<br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.GeneralDetails.Note }}
 {% endif %}
@@ -291,7 +291,7 @@ variable "{{ tfvar.Name }}" {
 {# Insert Declare Variable Example Note if provided #}
 {%- if tfvar.VarDetails.Note %}
 
-<br>
+<br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.VarDetails.Note }}
 {% endif %}
@@ -338,7 +338,7 @@ module "{{ ExModuleName }}" {
 {# Insert Usage Example Note if provided #}
 {%- if tfvar.UsageDetails.Note %}
 
-<br>
+<br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.UsageDetails.Note }}
 {% endif %}
@@ -385,7 +385,7 @@ The following optional module variables are not required because they already ha
 {# Insert Variable General Notes if defined #}
 {%- if tfvar.GeneralDetails.Note %}
 
-<br>
+<br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.GeneralDetails.Note }}
 {% endif %}
@@ -423,6 +423,7 @@ variable "{{ tfvar.Name }}" {
     }
 }
 {% endif %}
+```
 
 {# Insert Declare Variable Example Description if provided #}
 {%- if tfvar.VarDetails.Description %}
@@ -435,7 +436,7 @@ variable "{{ tfvar.Name }}" {
 {# Insert Declare Variable Example Note if provided #}
 {%- if tfvar.VarDetails.Note %}
 
-<br>
+<br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.VarDetails.Note }}
 {% endif %}
@@ -499,7 +500,7 @@ module "{{ ExModuleName }}" {
 {# Insert Usage Example Note if provided #}
 {%- if tfvar.UsageDetails.Note %}
 
-<br>
+<br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.UsageDetails.Note }}
 {% endif %}
@@ -667,7 +668,7 @@ output "{{ output.Name }}" {
 {% endfor %}
 ```
 
-<br>
+<br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> When referencing the module outputs be sure that the output value contains the identifier given to the module call. As an example, if the module was defined as `module "{{ ExModuleName }}" {}` then the output reference would be constructed as `module.{{ ExModuleName }}.{{ var.TFOutputs[0].Name|default("arn", true) }}`.
 
