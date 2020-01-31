@@ -513,6 +513,10 @@ variable "kms_tags" {
 
 <br><br>
 
+![Declaring kms_tags](images/tf_kms_tags.png)
+
+<br><br>
+
 ### :file_folder: Setting the kms_tags module variable within a projects root main.tf file
 
 ```terraform
@@ -610,7 +614,7 @@ variable "kms_tags" {
 
 ```terraform
 ###########################################################################
-# Required rnason/ActionsTest Module Vars:                             #
+# Required ActionsTest Module Vars:
 #-------------------------------------------------------------------------#
 # The following variables require consumer defined values to be provided. #
 ###########################################################################
@@ -619,7 +623,7 @@ kms_key_description = "Value Required"
 
 
 ###########################################################################
-# Optional rnason/ActionsTest Module Vars:                             #
+# Optional ActionsTest Module Vars:
 #-------------------------------------------------------------------------#
 # The following variables have default values already set by the module.  #
 # They will not need to be included in a project root module variables.tf #
