@@ -1,13 +1,10 @@
 Documentation:
   - Create Provisioned Project Resource List
-  - Generate Table of Contents
-  - Generate Outputs
-  - Generate Output Examples
-  - Generate TFVars
   - Terraform Plan Example
   - Related Resources such as Key or Bucket Policies Produced
   - Make Notes and Images List Items to cycle through in the event more then 1 is required.
   - Make Notes have 1 extra property, all the the author to choose between the standard Note, Info, Tip, and Warning.
+  - Allow the Icon for Note types etc to be set by user.
 
 CLI:
   - Refactor Code into CLI Tool
@@ -30,3 +27,9 @@ CLI:
   - NiceHaves:
     - Securely Store Token (So it doesn't have to be provided on each run)
     - Allow User to supply their own Jinja Template, Document all collected data and available variables that can be used within the template.
+
+Completed:
+  - Generate Table of Contents (1/31)
+  - Generate Outputs (1/31)
+  - Generate Output Examples (1/31)
+  - Generate TFVars (1/31)

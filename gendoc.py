@@ -276,7 +276,6 @@ try:
 
     # Add the Dir Tree Variable to the Template Dictionary:
     TemplateDict.update({ 'Tree' : DirTree })
-
 except Exception as e:
     cprint(" EXCEPTION ENCOUNTERED: ", 'grey', 'on_red')
     cprint("Error encountered attempting to construct directory structure tree variable:\n\nException: {}\n".format(str(e)), 'red')
@@ -409,7 +408,7 @@ except Exception as e:
 try:
     # Define Variables that will hold the Required and Optional Variables.
     TFOutputs = []
-    
+
     # Iterate through the project files and look for the outputs.tf file, then load it into a dict that can be sent to the doc templates.
     logging.info("Building module output list...")
     for tf in ProjectFiles:

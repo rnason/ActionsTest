@@ -580,7 +580,7 @@ variable "{{ tfvar.Name }}" {
 
 ```terraform
 ###########################################################################
-# Required {{ ExModuleRepoURL }} Module Vars:                             #
+# Required {{ var.Config.Repository.RepoName|default(ExModuleRepoURL, true) }} Module Vars:
 #-------------------------------------------------------------------------#
 # The following variables require consumer defined values to be provided. #
 ###########################################################################
@@ -600,7 +600,7 @@ variable "{{ tfvar.Name }}" {
 {% endfor %}
 
 ###########################################################################
-# Optional {{ ExModuleRepoURL }} Module Vars:                             #
+# Optional {{ var.Config.Repository.RepoName|default(ExModuleRepoURL, true) }} Module Vars:
 #-------------------------------------------------------------------------#
 # The following variables have default values already set by the module.  #
 # They will not need to be included in a project root module variables.tf #
