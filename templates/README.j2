@@ -412,7 +412,7 @@ variable "{{ tfvar.Name }}" {
     default     = {{ "tfvar.DefaultValue"|e if tfvar.Type == "String" else tfvar.DefaultValue }}
 }
 
-{%- else %}
+{% else %}
 variable "{{ tfvar.Name }}" {
     type        = {{ tfvar.Type }}
     description = "{{ tfvar.Description }}"
@@ -421,8 +421,8 @@ variable "{{ tfvar.Name }}" {
         {{ key }} = "{{ value }}"
         {% endfor %}
     }
-}
 {% endif %}
+}
 ```
 
 {# Insert Declare Variable Example Description if provided #}
