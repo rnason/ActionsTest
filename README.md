@@ -60,10 +60,12 @@ This module does not currently have any pre-requisites or dependency requirement
 ├── requirements.txt
 ├── CHANGELOG.md
 ├── images
+│   ├── tf_graph.png
 │   ├── tf_kms.png
 │   ├── tf_kms_tags.png
 │   ├── optional.png
 │   ├── neon_optional.png
+│   ├── tf_graph
 │   ├── required.png
 │   └── neon_required.png
 ├── gendoc.py
@@ -73,8 +75,12 @@ This module does not currently have any pre-requisites or dependency requirement
 │   ├── main.tf
 │   ├── README.md
 │   └── variables.tf
-├── SampleGitHubCall.json
 ├── gendoc.log
+├── .terraform
+│   └── plugins
+│       └── darwin_amd64
+│           ├── terraform-provider-aws_v2.47.0_x4
+│           └── lock.json
 ├── TODO_NOTES.yaml
 ├── README.md
 ├── README.yaml
@@ -85,6 +91,14 @@ This module does not currently have any pre-requisites or dependency requirement
 └── ORIGIN_README.md
 
 ```
+
+<br><br>
+
+# Module Diagram
+
+<br>
+
+![Module Diagram](images/tf_graph.png)
 
 <br><br>
 
@@ -555,7 +569,7 @@ The following code blocks can be used or appended to an existing `variables.tf` 
 
 ```terraform
 ###########################################################################
-# Required rnason/ActionsTest Module Vars:                             #
+# Required ActionsTest Module Vars:
 #-------------------------------------------------------------------------#
 # The following variables require consumer defined values to be provided. #
 ###########################################################################
@@ -571,7 +585,7 @@ variable "kms_key_description" {
 
 
 ###########################################################################
-# Optional rnason/ActionsTest Module Vars:                             #
+# Optional ActionsTest Module Vars:
 #-------------------------------------------------------------------------#
 # The following variables have default values already set by the module.  #
 # They will not need to be included in a project root module variables.tf #
@@ -652,7 +666,7 @@ The template will finally create the following outputs that can be pulled and us
 
 ```terraform
 ##############################################
-# rnason/ActionsTest Outputs:             #
+# ActionsTest Available Module Outputs:
 ##############################################
 output "kms_key_id" {
     aws_kms_key.this.id
@@ -671,16 +685,16 @@ output "kms_key_alias" {
 
 ```terraform
 ##############################################
-# rnason/ActionsTest Outputs:             #
+# ActionsTest Module Output Usage:
 ##############################################
 output "kms_key_id" {
-    value = module.kms.aws_kms_key.this.id
+    value = module.kms.kms_key_id
 }
 output "kms_key_arn" {
-    value = module.kms.aws_kms_key.this.arn
+    value = module.kms.kms_key_arn
 }
 output "kms_key_alias" {
-    value = module.kms.aws_kms_alias.this.arn
+    value = module.kms.kms_key_alias
 }
 ```
 
@@ -707,9 +721,7 @@ output "kms_key_alias" {
 
 # Contacts and Contributions
 
-This project is owned by [CloudMage](rnason@cloudmage.io)
-
-* [rnason](https://github.com/rnason)
+This project is owned and maintained by [CloudMage](https://github.com/rnason)
 
 <br>
 

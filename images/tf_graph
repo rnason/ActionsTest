@@ -1,0 +1,57 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_kms_alias.this" [label = "aws_kms_alias.this", shape = "box"]
+		"[root] aws_kms_key.this" [label = "aws_kms_key.this", shape = "box"]
+		"[root] data.aws_caller_identity.current" [label = "data.aws_caller_identity.current", shape = "box"]
+		"[root] data.aws_iam_policy_document.kms_admin_policy" [label = "data.aws_iam_policy_document.kms_admin_policy", shape = "box"]
+		"[root] data.aws_iam_policy_document.kms_owner_policy" [label = "data.aws_iam_policy_document.kms_owner_policy", shape = "box"]
+		"[root] data.aws_iam_policy_document.kms_resource_policy" [label = "data.aws_iam_policy_document.kms_resource_policy", shape = "box"]
+		"[root] data.aws_iam_policy_document.kms_user_policy" [label = "data.aws_iam_policy_document.kms_user_policy", shape = "box"]
+		"[root] data.aws_iam_policy_document.temp_kms_admin_kms_user_merge_policy" [label = "data.aws_iam_policy_document.temp_kms_admin_kms_user_merge_policy", shape = "box"]
+		"[root] data.aws_iam_policy_document.temp_kms_owner_kms_admin_merge_policy" [label = "data.aws_iam_policy_document.temp_kms_owner_kms_admin_merge_policy", shape = "box"]
+		"[root] data.aws_iam_policy_document.this" [label = "data.aws_iam_policy_document.this", shape = "box"]
+		"[root] output.kms_key_alias" [label = "output.kms_key_alias", shape = "note"]
+		"[root] output.kms_key_arn" [label = "output.kms_key_arn", shape = "note"]
+		"[root] output.kms_key_id" [label = "output.kms_key_id", shape = "note"]
+		"[root] provider.aws" [label = "provider.aws", shape = "diamond"]
+		"[root] var.kms_admin_principal_list" [label = "var.kms_admin_principal_list", shape = "note"]
+		"[root] var.kms_key_alias_name" [label = "var.kms_key_alias_name", shape = "note"]
+		"[root] var.kms_key_description" [label = "var.kms_key_description", shape = "note"]
+		"[root] var.kms_owner_principal_list" [label = "var.kms_owner_principal_list", shape = "note"]
+		"[root] var.kms_resource_principal_list" [label = "var.kms_resource_principal_list", shape = "note"]
+		"[root] var.kms_tags" [label = "var.kms_tags", shape = "note"]
+		"[root] var.kms_user_principal_list" [label = "var.kms_user_principal_list", shape = "note"]
+		"[root] aws_kms_alias.this" -> "[root] aws_kms_key.this"
+		"[root] aws_kms_key.this" -> "[root] data.aws_iam_policy_document.this"
+		"[root] aws_kms_key.this" -> "[root] var.kms_key_alias_name"
+		"[root] aws_kms_key.this" -> "[root] var.kms_key_description"
+		"[root] aws_kms_key.this" -> "[root] var.kms_tags"
+		"[root] data.aws_caller_identity.current" -> "[root] provider.aws"
+		"[root] data.aws_iam_policy_document.kms_admin_policy" -> "[root] data.aws_caller_identity.current"
+		"[root] data.aws_iam_policy_document.kms_admin_policy" -> "[root] var.kms_admin_principal_list"
+		"[root] data.aws_iam_policy_document.kms_owner_policy" -> "[root] data.aws_caller_identity.current"
+		"[root] data.aws_iam_policy_document.kms_owner_policy" -> "[root] var.kms_owner_principal_list"
+		"[root] data.aws_iam_policy_document.kms_resource_policy" -> "[root] data.aws_caller_identity.current"
+		"[root] data.aws_iam_policy_document.kms_resource_policy" -> "[root] var.kms_resource_principal_list"
+		"[root] data.aws_iam_policy_document.kms_user_policy" -> "[root] data.aws_caller_identity.current"
+		"[root] data.aws_iam_policy_document.kms_user_policy" -> "[root] var.kms_user_principal_list"
+		"[root] data.aws_iam_policy_document.temp_kms_admin_kms_user_merge_policy" -> "[root] data.aws_iam_policy_document.kms_user_policy"
+		"[root] data.aws_iam_policy_document.temp_kms_admin_kms_user_merge_policy" -> "[root] data.aws_iam_policy_document.temp_kms_owner_kms_admin_merge_policy"
+		"[root] data.aws_iam_policy_document.temp_kms_owner_kms_admin_merge_policy" -> "[root] data.aws_iam_policy_document.kms_admin_policy"
+		"[root] data.aws_iam_policy_document.temp_kms_owner_kms_admin_merge_policy" -> "[root] data.aws_iam_policy_document.kms_owner_policy"
+		"[root] data.aws_iam_policy_document.this" -> "[root] data.aws_iam_policy_document.kms_resource_policy"
+		"[root] data.aws_iam_policy_document.this" -> "[root] data.aws_iam_policy_document.temp_kms_admin_kms_user_merge_policy"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] output.kms_key_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] output.kms_key_arn"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] output.kms_key_id"
+		"[root] output.kms_key_alias" -> "[root] aws_kms_alias.this"
+		"[root] output.kms_key_arn" -> "[root] aws_kms_key.this"
+		"[root] output.kms_key_id" -> "[root] aws_kms_key.this"
+		"[root] provider.aws (close)" -> "[root] aws_kms_alias.this"
+		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
+		"[root] root" -> "[root] provider.aws (close)"
+	}
+}
+

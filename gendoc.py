@@ -4,7 +4,9 @@
 # Import Pip Installed Modules:
 from jinja2 import Template, Environment, FileSystemLoader
 from termcolor import colored, cprint
+from python_terraform import *
 import hcl, yaml, requests
+from graphviz import Source
 '''from github import Github'''
 
 # Import Base Python Modules
@@ -12,7 +14,11 @@ from datetime import datetime
 from pathlib import Path
 import json, os, sys, ntpath, logging
 
+# Instantiate Logger
 logging.basicConfig(filename='gendoc.log', filemode='w', format='%(levelname)s:    %(message)s', level=logging.DEBUG)
+
+# Instantiate Terraform Object
+TF = Terraform(working_dir='.')
 
 
 ##############
@@ -445,6 +451,38 @@ except Exception as e:
     logging.error(str(e))
     raise
 
+
+###########################
+# Run Terraform Format:   #
+###########################
+try:
+    # File Save Directory and Graph FileName values
+    # TODO: Make this into a config variable
+    ModuleImageDir = "images"
+    TFGraphFileName = "tf_graph"
+
+    # Make sure the Image Directory exists, if not then create it.
+    if not os.path.exists(ModuleImageDir):
+        os.makedirs(ModuleImageDir)
+    
+    # Check to see if TF has been initialzed, and if not initialize it
+    if not os.path.exists('.terraform'):
+        TF.cmd('init')
+    
+    # Run a Terraform Graph action to generate the graph dot structure
+    TFGraphFetch = TF.cmd('graph')
+    TFGraph = TFGraphFetch[1]
+    
+    # Instantiate Graphviz and render the file 
+    dot = Source(TFGraph, directory=ModuleImageDir, filename=TFGraphFileName, format='png')
+    dot.render()
+
+    # Add the file path to the Template Dictionary
+    TemplateDict.update(Diagram="{}/{}.png".format(ModuleImageDir, TFGraphFileName))
+except Exception as e:
+    logging.warning("Unable to render Terraform Graph file")
+    logging.warning(str(e))
+    pass
 
 ###########################
 # Render README Template: #

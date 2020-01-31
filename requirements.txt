@@ -5,3 +5,4 @@ requests
 PyGithub
 pyhcl
 graphviz
+python-terraform

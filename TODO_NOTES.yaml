@@ -5,6 +5,7 @@ Documentation:
   - Make Notes and Images List Items to cycle through in the event more then 1 is required.
   - Make Notes have 1 extra property, all the the author to choose between the standard Note, Info, Tip, and Warning.
   - Allow the Icon for Note types etc to be set by user.
+  - Validate that the config file is in the proper format, or autocreate one that is needed. If no config exists then auto create one.
 
 CLI:
   - Refactor Code into CLI Tool
@@ -12,6 +13,7 @@ CLI:
     - ConfigFile
     - Github Token
   - Commands:
+    - Generate Check for Graphviz and make the TF Plan Graph optional.
     - Generate Documentation
     - Generate Variable List
     - Generate TFVars File (pass tfvar file name and automatically add it to the environments directory)
@@ -27,6 +29,7 @@ CLI:
   - NiceHaves:
     - Securely Store Token (So it doesn't have to be provided on each run)
     - Allow User to supply their own Jinja Template, Document all collected data and available variables that can be used within the template.
+    - Add Input Argument for TF Directory to run against (tf = Terraform(working_dir='/home/test')
 
 Completed:
   - Generate Table of Contents (1/31)
