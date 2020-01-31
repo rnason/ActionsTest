@@ -2,155 +2,162 @@
 # Repository Configuration: #
 #############################
 Repository:
-  Provider: Github # Currently only supported provider
-  # NameSpace: rnason
-  NameSpace: tapestryinc
-  # RepoName: ActionsTest
-  RepoName: TF-AWS-KMS-Module
-  # Version is used as fall back to not being able to make a request to the GitHub releases API directly
-  Version: v1.0.3
-
+    Provider: Github # Currently only supported provider
+    # NameSpace: rnason
+    NameSpace: tapestryinc
+    # RepoName: ActionsTest
+    RepoName: TF-AWS-KMS-Module
+    # Version is used as fall back to not being able to make a request to the GitHub releases API directly
+    Version: v1.0.3
+    Contact: CloudMage
+    Email: rnason@cloudmage.io
 ############################
 # README.md Configuration: #
 ############################
 Readme:
-  Title: CloudMage Terraform ActionsTest Module
-  HeroImage: images/tf_kms.png
-  DocLink:
-  
-  #=====================#
-  # README.md Sections: #
-  #=====================#
-  GettingStarted: >-
-    This Terraform module was created to quickly and easily provision a secure AWS Key Management Service (KMS) Customer Managed Key (CMK). CMK's are used for server-side encryption on AWS services such as S3 buckets, EBS volumes, Dynamo DB Tables, or any other service where data encryption is required. This module also includes optional variables that allow the consumer of the module to choose how KMS Key policies will be constructed and placed on be the CMK at the time of provisioning.
-  
-  PreRequisites: >-
-    This module does not currently have any pre-requisites or dependency requirements.
-  
-  Usage:
-    ResourceName: kms
-  
-  Variables:
+    Title: CloudMage Terraform ActionsTest Module
+    HeroImage: images/tf_kms.png
+    DocLink:
     #=====================#
-    # Required Variables: #
+    # README.md Sections: #
     #=====================#
-    Required:
-      Image: images/neon_required.png
-      kms_key_alias_name:
-        ExampleValue: prod/s3
-        GeneralDetails:
-          Description: >-
-            This variable should be passed containing the desired key alias that will be assigned to the provisioned KMS CMK.
-          Image:
-          Note: The required `alias/` prefix is already defined in the module and not required as part of the variable string.
-        VarDetails:
-          Description:
-          Image:
-          Note:
-        UsageDetails:
-          Description:
-          Image:
-          Note:
-      kms_key_description:
-        ExampleValue: KMS key provisioned to encrypt prod s3 bucket
-        GeneralDetails:
-          Description: >-
-            This variable should be passed containing a short description of what the provisioned KMS CMK will be used for as its value.
-          Image:
-          Note:
-        VarDetails:
-          Description:
-          Image:
-          Note:
-        UsageDetails:
-          Description:
-          Image:
-          Note:
-    
-    #=====================#
-    # Optional Variables: #
-    #=====================#
-    Optional:
-      Image: images/neon_optional.png
-      kms_owner_principal_list:
-        ExampleValue: ["arn:aws:iam::123456789101::root", "arn:aws:iam::109876543210::root"]
-        GeneralDetails:
-          Description: >-
-            This variable is used to define a list of users/roles that will be added to the KMS Key Owner policy statement. If the variable is not defined, then the key owner policy will be included to contain the account root user, allowing IAM the ability to assign key permissions using standard IAM policies. If a list of roles/users is defined, then the provided list will instead be used to determine the key owner principals. Typically this variable will only be used if the CMK will be shared, and the key provisioner needs to make another AWS account a key owner to allow IAM policies in the other account to define permission for the provisioned shared key.
-          Image:
-          Note: >-
-            The key owner policy statement determines what users/roles own the provisioned KMS key. Owners have `kms:*` permissions on the CMK. They can perform any action on the key including performing any modifications to the key and the key policy.
-        VarDetails:
-          Description:
-          Image:
-          Note: You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
-        UsageDetails:
-          Description:
-          Image:
-          Note:
-      kms_admin_principal_list:
-        GeneralDetails:
-          Description: >-
-            This variable is used to define a list of users/roles that will be added to the KMS Key Administrator policy statement block. If a list of roles/users (including a list of a single user or role) is provided, then a KMS key Administrator policy will be generated automatically and appended to the key policy that will be applied to the provisioned CMK. If this variable is left empty or not included in the module call, then the KMS key administrator policy statement **will not be included** in the KMS key policy. The account root owner will still have kms:* permissions, but no additional administrators will be added. IAM policies can be constructed post key creation in order to grant permissions, including administration permissions to users/roles later by the key owner.
-          Image:
-          Note: >-
-            The key administrator policy statement determines what users/roles have administrative rights on the provisioned KMS key. Key administrators can modify the key and the key policy, but they are not granted usage of the key, or the ability to manage grants for the key. If a key administrator requires usage permissions, then they would also need to be added to the key usage policy statement.
-        VarDetails:
-          Description:
-          Image:
-          Note: You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
-        UsageDetails:
-          Description:
-          Image:
-          Note:
-      kms_user_principal_list:
-        GeneralDetails:
-          Description: >-
-            This variable is used to define a list of users/roles that will be added to the KMS Key usage policy statement block. If a list of roles/users (including a list of a single user or role) is provided, then a KMS key usage policy will be generated automatically and appended to the key policy that will be applied to the provisioned CMK. If this variable is left empty or not included in the module call, then the KMS key usage policy statement **will not be included** in the KMS key policy. The account root owner will still have kms:* permissions, but no additional key users will be added. IAM policies can be constructed post key creation in order to grant permissions, including key usage permissions to users/roles later by the key owner or a key administrator.
-          Image:
-          Note: >-
-            The key usage policy statement determines what users/roles have rights to encrypt, decrypt, re-encrypt, and generate data key operations with the provisioned CMK. Any users/roles that are included in this policy statement have no other rights on the key unless they are also added to one of the other key policy statement blocks also.
-        VarDetails:
-          Description:
-          Image:
-          Note: You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
-        UsageDetails:
-          Description:
-          Image:
-          Note:
-      kms_resource_principal_list:
-        GeneralDetails:
-          Description: >-
-            This variable is used to define a list of users/roles that will be added to the KMS Key resource grant policy statement block. If a list of roles/users (including a list of a single user or role) is provided, then a KMS key resource grant policy will be generated automatically and appended to the key policy that will be applied to the provisioned CMK. If this variable is left empty or not included in the module call, then the KMS key resource grant policy statement **will not be included** in the KMS key policy. The account root owner will still have kms:* permissions, but no additional key resource grant permissions will be added. IAM policies can be constructed post key creation in order to grant permissions, including key grantee permissions to users/roles later by the key owner or a key administrator.
-          Image:
-          Note: >-
-            The key resource grant policy statement determines what users/roles have rights to list, create, and revoke grants on the provisioned CMK. Key grants are a way of providing usage of the CMK temporarily. A user/role that has key grant or resource rights is allowed to grant applications, services, or resources a limited time pass to use the CMK and then revoke that pass when the application, service, or resource has completed the operation that required access to the key. No other rights on the key are given unless the user/role is also added to one of the other key policy statement blocks also.
-        VarDetails:
-          Description:
-          Image:
-          Note: You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
-        UsageDetails:
-          Description:
-          Image:
-          Note:
-      kms_tags:
-        GeneralDetails:
-          Description: >-
-            This variable should contain a map of tags that will be assigned to the KMS CMK upon creation. Any tags contained within the `kms_tags` map variable will be passed to the module and automatically merged with a few tags that are also automatically created when the module is executed. The automatically generated tags are as follows:
+    GettingStarted: >-
+        This Terraform module was created to quickly and easily provision a secure AWS Key Management Service (KMS) Customer Managed Key (CMK). CMK's are used for server-side encryption on AWS services such as S3 buckets, EBS volumes, Dynamo DB Tables, or any other service where data encryption is required. This module also includes optional variables that allow the consumer of the module to choose how KMS Key policies will be constructed and placed on be the CMK at the time of provisioning.
+    PreRequisites: >-
+        This module does not currently have any pre-requisites or dependency requirements.
+    Usage:
+        ResourceName: kms
+    Variables:
+        #=====================#
+        # Required Variables: #
+        #=====================#
+        Required:
+            Image: images/neon_required.png
+            kms_key_alias_name:
+                ExampleValue: prod/s3
+                GeneralDetails:
+                    Description: >-
+                        This variable should be passed containing the desired key alias that will be assigned to the provisioned KMS CMK.
+                    Note: The required `alias/` prefix is already defined in the module and not required as part of the variable string.
+                    Image:
+                VarDetails:
+                    Description:
+                    Note:
+                    Image:
+                UsageDetails:
+                    Description:
+                    Note:
+                    Image:
+            kms_key_description:
+                ExampleValue: KMS key provisioned to encrypt prod s3 bucket
+                GeneralDetails:
+                    Description: >-
+                        This variable should be passed containing a short description of what the provisioned KMS CMK will be used for as its value.
+                    Note:
+                    Image:
+                VarDetails:
+                    Description:
+                    Note:
+                    Image:
+                UsageDetails:
+                    Description:
+                    Note:
+                    Image:
+        #=====================#
+        # Optional Variables: #
+        #=====================#
+        Optional:
+            Image: images/neon_optional.png
+            kms_owner_principal_list:
+                ExampleValue: ["arn:aws:iam::123456789101::root", "arn:aws:iam::109876543210::root"]
+                GeneralDetails:
+                    Description: >-
+                        This variable is used to define a list of users/roles that will be added to the KMS Key Owner policy statement. If the variable is not defined, then the key owner policy will be included to contain the account root user, allowing IAM the ability to assign key permissions using standard IAM policies. If a list of roles/users is defined, then the provided list will instead be used to determine the key owner principals. Typically this variable will only be used if the CMK will be shared, and the key provisioner needs to make another AWS account a key owner to allow IAM policies in the other account to define permission for the provisioned shared key.
+                        Image:
+                    Note: >-
+                        The key owner policy statement determines what users/roles own the provisioned KMS key. Owners have `kms:*` permissions on the CMK. They can perform any action on the key including performing any modifications to the key and the key policy.
+                    Image:
+                VarDetails:
+                    Description:
+                    Note: You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
+                    Image:
+                UsageDetails:
+                    Description:
+                    Note:
+                    Image:
+            kms_admin_principal_list:
+                ExampleValue: ["arn:aws:iam::123456789101:role/AWS-KMS-Admin-Role"]
+                GeneralDetails:
+                    Description: >-
+                        This variable is used to define a list of users/roles that will be added to the KMS Key Administrator policy statement block. If a list of roles/users (including a list of a single user or role) is provided, then a KMS key Administrator policy will be generated automatically and appended to the key policy that will be applied to the provisioned CMK. If this variable is left empty or not included in the module call, then the KMS key administrator policy statement **will not be included** in the KMS key policy. The account root owner will still have kms:* permissions, but no additional administrators will be added. IAM policies can be constructed post key creation in order to grant permissions, including administration permissions to users/roles later by the key owner.
+                        Image:
+                    Note: >-
+                        The key administrator policy statement determines what users/roles have administrative rights on the provisioned KMS key. Key administrators can modify the key and the key policy, but they are not granted usage of the key, or the ability to manage grants for the key. If a key administrator requires usage permissions, then they would also need to be added to the key usage policy statement.
+                    Image:
+                VarDetails:
+                    Description:
+                    Note: You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
+                    Image:
+                UsageDetails:
+                    Description:
+                    Note:
+                    Image:
+            kms_user_principal_list:
+                ExampleValue: ["arn:aws:iam::123456789101:role/AWS-RDS-Service-Role", "arn:aws:iam::123456789101:user/rnason"]
+                GeneralDetails:
+                    Description: >-
+                        This variable is used to define a list of users/roles that will be added to the KMS Key usage policy statement block. If a list of roles/users (including a list of a single user or role) is provided, then a KMS key usage policy will be generated automatically and appended to the key policy that will be applied to the provisioned CMK. If this variable is left empty or not included in the module call, then the KMS key usage policy statement **will not be included** in the KMS key policy. The account root owner will still have kms:* permissions, but no additional key users will be added. IAM policies can be constructed post key creation in order to grant permissions, including key usage permissions to users/roles later by the key owner or a key administrator.
+                        Image:
+                    Note: >-
+                        The key usage policy statement determines what users/roles have rights to encrypt, decrypt, re-encrypt, and generate data key operations with the provisioned CMK. Any users/roles that are included in this policy statement have no other rights on the key unless they are also added to one of the other key policy statement blocks also.
+                    Image:
+                VarDetails:
+                    Description:
+                    Note: You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
+                    Image:
+                UsageDetails:
+                    Description:
+                    Note:
+                    Image:
+            kms_resource_principal_list:
+                ExampleValue: ["arn:aws:iam::123456789101:role/AWS-RDS-Service-Role", "arn:aws:iam::123456789101:user/rnason"]
+                GeneralDetails:
+                    Description: >-
+                        This variable is used to define a list of users/roles that will be added to the KMS Key resource grant policy statement block. If a list of roles/users (including a list of a single user or role) is provided, then a KMS key resource grant policy will be generated automatically and appended to the key policy that will be applied to the provisioned CMK. If this variable is left empty or not included in the module call, then the KMS key resource grant policy statement **will not be included** in the KMS key policy. The account root owner will still have kms:* permissions, but no additional key resource grant permissions will be added. IAM policies can be constructed post key creation in order to grant permissions, including key grantee permissions to users/roles later by the key owner or a key administrator.
+                        Image:
+                    Note: >-
+                        The key resource grant policy statement determines what users/roles have rights to list, create, and revoke grants on the provisioned CMK. Key grants are a way of providing usage of the CMK temporarily. A user/role that has key grant or resource rights is allowed to grant applications, services, or resources a limited time pass to use the CMK and then revoke that pass when the application, service, or resource has completed the operation that required access to the key. No other rights on the key are given unless the user/role is also added to one of the other key policy statement blocks also.
+                    Image:
+                VarDetails:
+                    Description:
+                    Note: You can not assign an IAM group as a policy principal, only IAM users/roles are allowed as policy principals.
+                    Image:
+                UsageDetails:
+                    Description:
+                    Note:
+                    Image:
+            kms_tags:
+                ExampleValue:
+                    Provisioned_By: Terraform
+                    Module_GitHub_URL: https://github.com/CloudMage-TF/AWS-KMS-Module.git
+                    Environment: Prod
+                GeneralDetails:
+                    Description: >-
+                        This variable should contain a map of tags that will be assigned to the KMS CMK upon creation. Any tags contained within the `kms_tags` map variable will be passed to the module and automatically merged with a few tags that are also automatically created when the module is executed. The automatically generated tags are as follows:
 
-            * __Name__ - This tag is assigned the value from the `kms_key_alias_name` required variable that is passed during module execution
-            * __Created_By__ - This tag is assigned the value of the aws user that was used to execute the Terraform module to create the KMS CMK. It uses the Terraform `aws_caller_identity {}` data source provider to obtain the User_Id value. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
-            * __Creator_ARN__ - This tag is assigned the ARN value of the aws user that was used to execute the Terraform module to create the KMS CMK. It uses the Terraform `aws_caller_identity {}` data source provider to obtain the User_ARN value. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
-            * __Creation_Date__ - This tag is assigned a value that is obtained by the Terraform `timestamp()` function. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
-            * __Updated_On__ - This tag is assigned a value that is obtained by the Terraform `timestamp()` function. This tag will be updated on each future execution of the module to ensure that it's value displays the last `terraform apply` date.
-          Image:
-          Note: >-
-            The key administrator policy statement determines what users/roles have administrative rights on the provisioned KMS key. Key administrators can modify the key and the key policy, but they are not granted usage of the key, or the ability to manage grants for the key. If a key administrator requires usage permissions, then they would also need to be added to the key usage policy statement.
-        VarDetails:
-          Description:
-          Image:
-          Note:
-        UsageDetails:
-          Description:
-          Image:
-          Note:
+                        * __Name__ - This tag is assigned the value from the `kms_key_alias_name` required variable that is passed during module execution
+                        * __Created_By__ - This tag is assigned the value of the aws user that was used to execute the Terraform module to create the KMS CMK. It uses the Terraform `aws_caller_identity {}` data source provider to obtain the User_Id value. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
+                        * __Creator_ARN__ - This tag is assigned the ARN value of the aws user that was used to execute the Terraform module to create the KMS CMK. It uses the Terraform `aws_caller_identity {}` data source provider to obtain the User_ARN value. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
+                        * __Creation_Date__ - This tag is assigned a value that is obtained by the Terraform `timestamp()` function. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
+                        * __Updated_On__ - This tag is assigned a value that is obtained by the Terraform `timestamp()` function. This tag will be updated on each future execution of the module to ensure that it's value displays the last `terraform apply` date.
+                    Note: >-
+                        The key administrator policy statement determines what users/roles have administrative rights on the provisioned KMS key. Key administrators can modify the key and the key policy, but they are not granted usage of the key, or the ability to manage grants for the key. If a key administrator requires usage permissions, then they would also need to be added to the key usage policy statement.
+                    Image:
+                VarDetails:
+                    Description:
+                    Note:
+                    Image:
+                UsageDetails:
+                    Description:
+                    Note:
+                    Image:

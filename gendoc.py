@@ -320,6 +320,8 @@ try:
     # Define Variables to track the length of each variable so that spacing can be set correctly in the documentation
     TFReqMaxLen = 0
     TFOptMaxLen = 0
+
+    # Iterate through the project files and look for the outputs.tf file, then load it into a dict that can be sent to the doc templates.
     logging.info("Building module variable list...")
     for tf in ProjectFiles:
         if 'variables.tf' in tf and 'example' not in tf and 'examples' not in tf:
@@ -353,7 +355,7 @@ try:
                     # Check for additional data and add it to the variable object
                     if VarConfigData is not None:
                         for key, value in VarConfigData.items():
-                            VarObject.update({k: v})
+                            VarObject.update({key: value})
 
                     # Log the required var and append to the required vars list.
                     logging.debug("Added {} to TFRequiredVars list.".format(k))
@@ -374,18 +376,11 @@ try:
                     # Check for additional data and add it to the variable object
                     if VarConfigData is not None:
                         for key, value in VarConfigData.items():
-                            VarObject.update({k: v})
+                            VarObject.update({key: value})
 
                     # Log the optional var and append to the optional vars list.
                     logging.debug("Added {} to TFOptionalVars list.".format(k))
                     TFOptionalVars.append(VarObject)
-
-    # Log all the things
-    logging.info("Variable lists completed:")
-    logging.info("{} Required Variables Collected: {}".format(len(TFRequiredVars), TFRequiredVars))
-    logging.info("Longest Required Variable Length: {}".format(TFReqMaxLen))
-    logging.info("{} Optional Variables Collected: {}".format(len(TFOptionalVars), TFOptionalVars))
-    logging.info("Longest Optional Variable Length: {}".format(TFOptMaxLen))
 
     # Add the Variable Lists to the Template Dictionary
     logging.debug("Adding Lists to Template Dictionary")
@@ -393,10 +388,61 @@ try:
     TemplateDict.update(TFRequiredVars_MaxLength=TFReqMaxLen)
     TemplateDict.update(TFOptionalVars=TFOptionalVars)
     TemplateDict.update(TFOptionalVars_MaxLength=TFOptMaxLen)
+    
+    # Log all the things
+    logging.info("Variable list processing completed:")
+    logging.info("{} Required Variables Collected: {}".format(len(TFRequiredVars), TFRequiredVars))
+    logging.info("Longest Required Variable Length: {}".format(TFReqMaxLen))
+    logging.info("{} Optional Variables Collected: {}".format(len(TFOptionalVars), TFOptionalVars))
+    logging.info("Longest Optional Variable Length: {}".format(TFOptMaxLen))
 except Exception as e:
     cprint(" EXCEPTION ENCOUNTERED: ", 'grey', 'on_red')
-    cprint("Error encountered attempting to construct terraform file list:\n\nException: {}\n".format(str(e)), 'red')
-    logging.error("Unexpected Error occurred attempting to construct terraform file list.")
+    cprint("Error encountered attempting to construct terraform variables list:\n\nException: {}\n".format(str(e)), 'red')
+    logging.error("Unexpected Error occurred attempting to construct terraform variables list.")
+    logging.error(str(e))
+    raise
+
+
+############################################
+# Construct Terraform Module Output Lists: #
+############################################
+try:
+    # Define Variables that will hold the Required and Optional Variables.
+    TFOutputs = []
+    
+    # Iterate through the project files and look for the outputs.tf file, then load it into a dict that can be sent to the doc templates.
+    logging.info("Building module output list...")
+    for tf in ProjectFiles:
+        if 'outputs.tf' in tf and 'example' not in tf and 'examples' not in tf:
+            logging.debug("outputs.tf file FOUND: [{}]".format(tf))
+            with open(tf, 'r') as VarFile:
+                Outputs = hcl.load(VarFile)
+            logging.debug("outputs.tf file open, parsing, sorting, and storing outputs...")
+            logging.debug(json.dumps(Outputs, indent=4, sort_keys=True))
+
+            # Parse each output from the outputs.tf file and build a dict that can be sent to the doc template:
+            for k, v in Outputs.get('output').items():
+                # Create a OutputObj to pass to the template containing the data collected from parsing the output.tf file
+                OutputObj = {
+                    'Name': k,
+                    'Output': v.get('value')
+                }
+
+                # Log the required var and append to the required vars list.
+                logging.debug("Added {} to TFOutputs list.".format(k))
+                TFOutputs.append(OutputObj)
+
+    # Log all the things
+    logging.info("Output list processing completed:")
+    logging.info("{} Module outputs Collected: {}".format(len(TFOutputs), TFOutputs))
+
+    # Add the Output list to the Template Dictionary
+    logging.debug("Adding outputs to Template Dictionary")
+    TemplateDict.update(TFOutputs=TFOutputs)
+except Exception as e:
+    cprint(" EXCEPTION ENCOUNTERED: ", 'grey', 'on_red')
+    cprint("Error encountered attempting to construct terraform outputs list:\n\nException: {}\n".format(str(e)), 'red')
+    logging.error("Unexpected Error occurred attempting to construct terraform outputs list.")
     logging.error(str(e))
     raise
 

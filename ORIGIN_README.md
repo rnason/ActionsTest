@@ -68,7 +68,7 @@ Module variables that need to either be defined or re-defined with a non-default
 
 <br>
 
-> __NOTE:__ There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
+> :atom: &nbsp;[__TIP:__](Note) &nbsp;&nbsp; <br> There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
 
 <br><br>
 
@@ -230,7 +230,7 @@ Statement:
 
 ### Example `terraform plan` output
 
-```hcl
+```terraform
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
@@ -1261,16 +1261,16 @@ output "cmk_alias" {
 
 # Requirements
 
-- [Terraform](https://www.terraform.io/)
-- [GIT](https://git-scm.com/download/win)
-- [AWS-Account](https://https://aws.amazon.com/)
+* [Terraform](https://www.terraform.io/)
+* [GIT](https://git-scm.com/download/win)
+* [AWS-Account](https://https://aws.amazon.com/)
 
 <br><br>
 
 # Recommended
 
-- [Terraform for VSCode](https://github.com/mauve/vscode-terraform)
-- [Terraform Config Inspect](https://github.com/hashicorp/terraform-config-inspect)
+* [Terraform for VSCode](https://github.com/mauve/vscode-terraform)
+* [Terraform Config Inspect](https://github.com/hashicorp/terraform-config-inspect)
 
 <br><br>
 
@@ -1280,7 +1280,7 @@ This project is owned by [CloudMage](rnason@cloudmage.io).
 
 To contribute, please:
 
-- Fork the project
-- Create a local branch
-- Submit Changes
-- Create A Pull Request
+* Fork the project
+* Create a local branch
+* Submit Changes
+* Create A Pull Request

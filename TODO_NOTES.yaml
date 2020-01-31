@@ -5,7 +5,9 @@ Documentation:
   - Generate Output Examples
   - Generate TFVars
   - Terraform Plan Example
-  - Related Resources such as Key or Bucket Policies Produced.
+  - Related Resources such as Key or Bucket Policies Produced
+  - Make Notes and Images List Items to cycle through in the event more then 1 is required.
+  - Make Notes have 1 extra property, all the the author to choose between the standard Note, Info, Tip, and Warning.
 
 CLI:
   - Refactor Code into CLI Tool
