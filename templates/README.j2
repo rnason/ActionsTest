@@ -22,12 +22,6 @@
 {% else -%}
     {% set ExModuleVersion = var.Config.Repository.Version|default("v1.0.0", true) -%}
 {% endif %}
-{# Set Repo Contact #}
-{% if var.Config.Repository.Contact is defined -%}
-    {% set ExModuleContact = var.Config.Repository.Contact -%}
-{% else -%}
-    {% set ExModuleContact = var.Repo.owner.login|default("ProjectOwner", true) -%}
-{% endif %}
 {# START OF README TPL #}
 <!-- VSCode Markdown Exclusions-->
 <!-- markdownlint-disable MD025 Single Title Headers-->
@@ -528,7 +522,7 @@ The following code blocks can be used or appended to an existing `variables.tf` 
 
 ```terraform
 ###########################################################################
-# Required {{ ExModuleRepoURL }} Module Vars:                             #
+# Required {{ var.Config.Repository.RepoName|default(ExModuleRepoURL, true) }} Module Vars:
 #-------------------------------------------------------------------------#
 # The following variables require consumer defined values to be provided. #
 ###########################################################################
@@ -541,7 +535,7 @@ variable "{{ tfvar.Name }}" {
 {% endfor %}
 
 ###########################################################################
-# Optional {{ ExModuleRepoURL }} Module Vars:                             #
+# Optional {{ var.Config.Repository.RepoName|default(ExModuleRepoURL, true) }} Module Vars:
 #-------------------------------------------------------------------------#
 # The following variables have default values already set by the module.  #
 # They will not need to be included in a project root module variables.tf #
@@ -636,7 +630,7 @@ The template will finally create the following outputs that can be pulled and us
 
 ```terraform
 ##############################################
-# {{ ExModuleRepoURL }} Outputs:             #
+# {{ var.Config.Repository.RepoName|default(ExModuleRepoURL, true) }} Available Module Outputs:
 ##############################################
 {% for output in var.TFOutputs %}
 output "{{ output.Name }}" {
@@ -651,11 +645,11 @@ output "{{ output.Name }}" {
 
 ```terraform
 ##############################################
-# {{ ExModuleRepoURL }} Outputs:             #
+# {{ var.Config.Repository.RepoName|default(ExModuleRepoURL, true) }} Module Output Usage:
 ##############################################
 {% for output in var.TFOutputs %}
 output "{{ output.Name }}" {
-    value = module.{{ ExModuleName }}.{{ output.Output }}
+    value = module.{{ ExModuleName }}.{{ output.Name }}
 }
 {% endfor %}
 ```
@@ -682,12 +676,12 @@ output "{{ output.Name }}" {
 <br><br>
 
 # Contacts and Contributions
+{% if var.Repo %}
 
-This project is owned by [{{ ExModuleContact }}]({{ var.Config.Repository.Email|default("owner@here", true) }})
-
-* [{{ var.Repo.owner.login|default("DaBoss", true) }}]({{ var.Repo.owner.html_url|default("https://github.com", true) }})
+This project is owned and maintained by [{{var.Config.Repository.Owner|default(var.Repo.owner.login, true)}}]({{ var.Repo.owner.html_url }})
 
 <br>
+{% endif %}
 
 To contribute, please:
 

@@ -9,8 +9,7 @@ Repository:
     # RepoName: TF-AWS-KMS-Module
     # Version is used as fall back to not being able to make a request to the GitHub releases API directly
     Version: v1.0.3
-    Contact: CloudMage
-    Email: rnason@cloudmage.io
+    Owner: CloudMage
 ############################
 # README.md Configuration: #
 ############################

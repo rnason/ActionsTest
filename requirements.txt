@@ -4,3 +4,4 @@ PyYaml
 requests
 PyGithub
 pyhcl
+graphviz
