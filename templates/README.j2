@@ -35,12 +35,15 @@
 # {{ var.Config.Readme.Title|default("Terraform Module Documentation", true) }}
 
 {# OPTIONAL HERO IMAGE #}
-{%- if var.Config.Readme.HeroImage is defined %}
+{% if var.Config.Readme.HeroImage %}
+<br>
 
 ![Hero]({{ var.Config.Readme.HeroImage }})
-{% endif %}
 
 <br>
+{% else %}
+<br>
+{% endif %}
 
 {# VERSION BADGE #}
 ![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-{{ ExModuleVersion }}-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25)
@@ -189,8 +192,7 @@ variable "{{ tfvar.Name }}" {
     description = "{{ tfvar.Description }}"
 }
 {% endif %}
-
-{%- endfor %}
+{% endfor %}
 ```
 
 <br>
@@ -233,44 +235,44 @@ The following required module variables do not contain default values and must b
 
 {% for tfvar in var.TFRequiredVars %}
 ## :warning: {{ tfvar.Name }}
-
-{# Insert Required Variable Image if Provided #}
-{%- if var.Config.Readme.Variables.Required.Image %}
+{# Variable Image if Provided #}
+{% if var.Config.Readme.Variables.Required.Image %}
 
 <br>
 
 ![Required]({{ var.Config.Readme.Variables.Required.Image }})
 {% endif %}
+{# BEGIN GENERALDETAILS SECTION  (Optional Note/Image Only, Description is provided by Config or Variables.tf file parse) #}
+{% if tfvar.GeneralDetails.Description %}
 
 <br>
 
-{# Insert Variable General Description or Terraform Description Value #}
-{% if tfvar.GeneralDetails.Description %}
 {{ tfvar.GeneralDetails.Description }}
 {% else %}
+
+<br>
+
 {{ tfvar.Description }}
 {% endif %}
-
-{# Insert Variable General Notes if defined #}
-{%- if tfvar.GeneralDetails.Note %}
+{% if tfvar.GeneralDetails.Note %}
 
 <br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.GeneralDetails.Note }}
 {% endif %}
-
-{# Insert Variable General Image if defined #}
-{%- if tfvar.GeneralDetails.Image %}
+{% if tfvar.GeneralDetails.Image %}
 
 <br><br>
 
 ![{{ tfvar.Name }}]({{ tfvar.GeneralDetails.Image }})
-{% endif %}
-{# End Variable General Section #}
 
 <br><br>
+{% else %}
 
-{# Declare Variable Example #}
+<br><br>
+{% endif %}
+{# END GENERALDETAILS SECTION #}
+
 ### :file_folder: Declaration of {{ tfvar.Name }} within the modules variables.tf file
 
 ```terraform
@@ -279,35 +281,32 @@ variable "{{ tfvar.Name }}" {
     description = "{{ tfvar.Description }}"
 }
 ```
-
-{# Insert Declare Variable Example Description if provided #}
-{%- if tfvar.VarDetails.Description %}
+{# BEGIN VARDETAILS SECTION  (Optional Description/Note/Image) #}
+{% if tfvar.VarDetails.Description %}
 
 <br>
 
 {{ tfvar.VarDetails.Description }}
 {% endif %}
-
-{# Insert Declare Variable Example Note if provided #}
-{%- if tfvar.VarDetails.Note %}
+{% if tfvar.VarDetails.Note %}
 
 <br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.VarDetails.Note }}
 {% endif %}
-
-{# Insert Declare Variable Example Image if provided #}
-{%- if tfvar.VarDetails.Image %}
-
-<br>
-
-![Declaring {{ tfvar.Name }}]({{ tfvar.VarDetails.Image }})
-{% endif %}
-{# End Variable Declaration Section #}
+{% if tfvar.VarDetails.Image %}
 
 <br><br>
 
-{# Variable Usage in Module Example Block #}
+![Declaring {{ tfvar.Name }}]({{ tfvar.VarDetails.Image }})
+
+<br><br>
+{% else %}
+
+<br><br>
+{% endif %}
+{# END VARDETAILS SECTION #}
+
 ### :file_folder: Setting the {{ tfvar.Name }} module variable within a projects root main.tf file
 
 ```terraform
@@ -326,82 +325,81 @@ module "{{ ExModuleName }}" {
     {% endif %}
 }
 ```
-
-{# Insert Usage Example Description if provided #}
-{%- if tfvar.UsageDetails.Description %}
+{# BEGIN USAGEDETAILS SECTION  (Optional Description/Note/Image) #}
+{% if tfvar.UsageDetails.Description %}
 
 <br>
 
 {{ tfvar.UsageDetails.Description }}
 {% endif %}
-
-{# Insert Usage Example Note if provided #}
-{%- if tfvar.UsageDetails.Note %}
+{% if tfvar.UsageDetails.Note %}
 
 <br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.UsageDetails.Note }}
 {% endif %}
+{% if tfvar.UsageDetails.Image %}
 
-{# Insert Usage Example Image if provided #}
-{%- if tfvar.UsageDetails.Image %}
-
-<br>
+<br><br>
 
 ![{{ tfvar.Name }} Usage Example]({{ tfvar.UsageDetails.Image }})
-{% endif %}
 
 <br><br><br>
 
+{% else %}
+
+<br><br><br>
+
+{% endif %}
 {% endfor %}
-{# End of Usage Example Section #}
-{# OPTIONAL VARIABLES #}
+{# END USAGEDETAILS SECTION #}
+{# OPTIONAL VARIABLES -#}
 # Optional Module Variables
 
 The following optional module variables are not required because they already have default values assigned when the variables where defined within the modules `variables.tf` file. If the default values do not need to be changed by the root project consuming the module, then they do not even need to be included in the root project. If any of the variables do need to be changed, then they can be added to the root project in the same way that the required variables were defined and utilized. Optional variables also may alter how the module provisions resources in the cases of encryption or IAM policy generation. A variable could flag an encryption requirement when provisioning an S3 bucket or Dynamo table by providing a KMS CMK, for example. Another use case may be the passage of ARN values to allow users or roles access to services or resources, whereas by default permissions would be more restrictive or only assigned to the account root or a single IAM role. A detailed explanation of each of these optional variables can be found below:
 
-<br><br>
+<br>
 
 {% for tfvar in var.TFOptionalVars %}
 ## :white_check_mark: {{ tfvar.Name }}
-
-{# Insert Optional Variable Image if Provided #}
-{%- if var.Config.Readme.Variables.Optional.Image %}
+{# Variable Image if Provided #}
+{% if var.Config.Readme.Variables.Optional.Image %}
 
 <br>
 
 ![Optional]({{ var.Config.Readme.Variables.Optional.Image }})
 {% endif %}
+{# BEGIN GENERALDETAILS SECTION  (Optional Note/Image Only, Description is provided by Config or Variables.tf file parse) #}
+{% if tfvar.GeneralDetails.Description %}
 
 <br>
 
-{# Insert Variable General Description or Terraform Description Value #}
-{% if tfvar.GeneralDetails.Description %}
 {{ tfvar.GeneralDetails.Description }}
 {% else %}
+
+<br>
+
 {{ tfvar.Description }}
 {% endif %}
-
-{# Insert Variable General Notes if defined #}
-{%- if tfvar.GeneralDetails.Note %}
+{% if tfvar.GeneralDetails.Note %}
 
 <br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.GeneralDetails.Note }}
 {% endif %}
-
-{# Insert Variable General Image if defined #}
-{%- if tfvar.GeneralDetails.Image %}
-
-<br>
-
-![{{ tfvar.Name }}]({{ tfvar.GeneralDetails.Image }})
-{% endif %}
-{# End Variable General Section #}
+{% if tfvar.GeneralDetails.Image %}
 
 <br><br>
 
-{# Declare Variable Example #}
+![{{ tfvar.Name }}]({{ tfvar.GeneralDetails.Image }})
+
+<br><br>
+{% else %}
+
+<br><br>
+{% endif %}
+{# END GENERALDETAILS SECTION #}
+
 ### :file_folder: Declaration of {{ tfvar.Name }} within the modules variables.tf file
 
 ```terraform
@@ -424,35 +422,32 @@ variable "{{ tfvar.Name }}" {
 {% endif %}
 }
 ```
-
-{# Insert Declare Variable Example Description if provided #}
-{%- if tfvar.VarDetails.Description %}
+{# BEGIN VARDETAILS SECTION  (Optional Description/Note/Image) #}
+{% if tfvar.VarDetails.Description %}
 
 <br>
 
 {{ tfvar.VarDetails.Description }}
 {% endif %}
-
-{# Insert Declare Variable Example Note if provided #}
-{%- if tfvar.VarDetails.Note %}
+{% if tfvar.VarDetails.Note %}
 
 <br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.VarDetails.Note }}
 {% endif %}
-
-{# Insert Declare Variable Example Image if provided #}
-{%- if tfvar.VarDetails.Image %}
-
-<br>
-
-![Declaring {{ tfvar.Name }}]({{ tfvar.VarDetails.Image }})
-{% endif %}
+{% if tfvar.VarDetails.Image %}
 
 <br><br>
-{# End Variable Declaration Section #}
 
-{# Variable Usage in Module Example Block #}
+![Declaring {{ tfvar.Name }}]({{ tfvar.VarDetails.Image }})
+
+<br><br>
+{% else %}
+
+<br><br>
+{% endif %}
+{# END VARDETAILS SECTION #}
+
 ### :file_folder: Setting the {{ tfvar.Name }} module variable within a projects root main.tf file
 
 ```terraform
@@ -488,37 +483,34 @@ module "{{ ExModuleName }}" {
     {% endif %}
 }
 ```
-
-{# Insert Usage Example Description if provided #}
-{%- if tfvar.UsageDetails.Description %}
+{# BEGIN USAGEDETAILS SECTION  (Optional Description/Note/Image) #}
+{% if tfvar.UsageDetails.Description %}
 
 <br>
 
 {{ tfvar.UsageDetails.Description }}
 {% endif %}
-
-{# Insert Usage Example Note if provided #}
-{%- if tfvar.UsageDetails.Note %}
+{% if tfvar.UsageDetails.Note %}
 
 <br><br>
 
 > :spiral_notepad: &nbsp;[__Note:__](Note) <br> {{ tfvar.UsageDetails.Note }}
 {% endif %}
+{% if tfvar.UsageDetails.Image %}
 
-{# Insert Usage Example Image if provided #}
-{%- if tfvar.UsageDetails.Image %}
-
-<br>
+<br><br>
 
 ![{{ tfvar.Name }} Usage Example]({{ tfvar.UsageDetails.Image }})
-{% endif %}
 
 <br><br><br>
 
-{%- endfor %}
-{# End of Usage Example Section #}
+{% else %}
 
+<br><br><br>
 
+{% endif %}
+{% endfor %}
+{# END USAGEDETAILS SECTION #}
 {# MODULE EXAMPLE FILES MENTION #}
 # Module Example Usage
 
