@@ -45,6 +45,13 @@ variable "kms_resource_principal_list" {
   default     = []
 }
 
+variable "kms_test_var" {
+  type        = list
+  description = "Test all the things."
+  default     = []
+}
+
+
 
 ###########################################################################
 # Tags:                                                                   #

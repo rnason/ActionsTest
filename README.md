@@ -29,6 +29,7 @@
   * :recycle: `kms_admin_principal_list`
   * :recycle: `kms_user_principal_list`
   * :recycle: `kms_resource_principal_list`
+  * :recycle: `kms_test_var`
   * :recycle: `kms_tags`
 * [Module Example Usage](#module-example-usage)
 * [Variables and TFVar Reference File Templates](#variables-and-tfvar-reference-file-templates)
@@ -82,7 +83,6 @@ This module does not currently have any pre-requisites or dependency requirement
 │           ├── terraform-provider-aws_v2.47.0_x4
 │           └── lock.json
 ├── TODO_NOTES.yaml
-├── README.md
 ├── README.yaml
 ├── variables.tf
 ├── templates
@@ -118,6 +118,7 @@ module "kms" {
     # kms_admin_principal_list    = []
     # kms_user_principal_list     = []
     # kms_resource_principal_list = []
+    # kms_test_var                = []
 
     # kms_tags = {
     #   Provisioned_By = "Terraform"
@@ -490,6 +491,50 @@ module "kms" {
 
 <br><br><br>
 
+## :white_check_mark: kms_test_var
+
+<br>
+
+![Optional](images/neon_optional.png)
+
+<br>
+
+Test all the things.
+
+<br><br>
+
+### :file_folder: Declaration of kms_test_var within the modules variables.tf file
+
+```terraform
+variable "kms_test_var" {
+    type        = list
+    description = "Test all the things."
+    default     = []
+}
+
+}
+```
+
+<br><br>
+
+### :file_folder: Setting the kms_test_var module variable within a projects root main.tf file
+
+```terraform
+module "kms" {
+    source = "git@github.com:rnason/ActionsTest?ref=v1.1.0"
+
+    // Required Variables
+    kms_key_alias_name  = prod/s3
+    kms_key_description = KMS key provisioned to encrypt prod s3 bucket
+
+
+    // Optional Variables with module defined default values assigned
+    kms_test_var                = None
+}
+```
+
+<br><br><br>
+
 ## :white_check_mark: kms_tags
 
 <br>
@@ -611,6 +656,11 @@ variable "kms_resource_principal_list" {
     description = "List of users/roles that will be granted permissions to create/list/delete temporary grants to the provisioned KMS CMK."
     default     = []
 }
+variable "kms_test_var" {
+    type        = list
+    description = "Test all the things."
+    default     = []
+}
 
 variable "kms_tags" {
     type        = map
@@ -647,6 +697,7 @@ kms_key_description = "Value Required"
 # kms_admin_principal_list    = []
 # kms_user_principal_list     = []
 # kms_resource_principal_list = []
+# kms_test_var                = []
 
 # kms_tags = {
 #   Provisioned_By = "Terraform"
@@ -677,6 +728,9 @@ output "kms_key_arn" {
 output "kms_key_alias" {
     aws_kms_alias.this.arn
 }
+output "kms_key_bogus" {
+    aws_kms_alias.this.bogus
+}
 ```
 
 <br><br>
@@ -695,6 +749,9 @@ output "kms_key_arn" {
 }
 output "kms_key_alias" {
     value = module.kms.kms_key_alias
+}
+output "kms_key_bogus" {
+    value = module.kms.kms_key_bogus
 }
 ```
 

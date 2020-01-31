@@ -165,3 +165,17 @@ Readme:
                     Description:
                     Note:
                     Image:
+            kms_test_var:
+                ExampleValue:
+                GeneralDetails:
+                    Note:
+                    Image:
+                VarDetails:
+                    Description:
+                    Note:
+                    Image:
+                UsageDetails:
+                    Description:
+                    Note:
+                    Image:
+            

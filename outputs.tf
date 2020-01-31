@@ -12,3 +12,7 @@ output "kms_key_arn" {
 output "kms_key_alias" {
   value = aws_kms_alias.this.arn
 }
+
+output "kms_key_bogus" {
+  value = aws_kms_alias.this.bogus
+}
